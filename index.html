@@ -70,14 +70,13 @@
 
   *{ box-sizing:border-box; margin:0; padding:0; }
 
-  html{ scroll-behavior:smooth; }
+  html{ scroll-behavior:smooth; overflow-x:hidden; }
 
   body{
     background:var(--bg);
     color:var(--text-hi);
     font-family:'Inter', sans-serif;
     -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
     transition:background .4s ease, color .4s ease;
   }
 
@@ -375,6 +374,273 @@
 
   @media (max-width:600px){
     .value-grid{ grid-template-columns:1fr; }
+  }
+
+  /* ============ STOCK CARD STACK ============ */
+  .stock-driver{ position:relative; height:320vh; }
+
+  .stock-stage{
+    position:sticky;
+    top:0;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  .stock-stack{
+    position:relative;
+    width:min(560px, 90vw);
+    aspect-ratio:1.72/1;
+  }
+
+  .stock-card{
+    position:absolute;
+    inset:0;
+    border-radius:26px;
+    overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,.35);
+    cursor:pointer;
+    opacity:0;
+    transition:transform .8s cubic-bezier(.16,1,.3,1), opacity .5s ease;
+    will-change:transform;
+  }
+
+  .stock-purple{ background:#2A1065; z-index:1; }
+  .stock-blue{ background:#0D2A5C; z-index:2; }
+  .stock-amber{ background:#A85D1B; z-index:3; }
+  .stock-teal{ background:#0D3B36; z-index:4; }
+
+  .stock-card[data-dir="top-right"]{ transform:translate(140%,-120%) rotate(20deg); }
+  .stock-card[data-dir="left"]{ transform:translate(-170%,10%) rotate(-14deg); }
+  .stock-card[data-dir="top-left"]{ transform:translate(-140%,-120%) rotate(-20deg); }
+  .stock-card[data-dir="bottom"]{ transform:translate(10%,170%) rotate(10deg); }
+
+  .stock-card.landed{ opacity:1; }
+  .stock-card.landed.stock-purple{ transform:translate(18px,-14px) rotate(6deg) scale(.97); }
+  .stock-card.landed.stock-blue{ transform:translate(10px,-8px) rotate(3deg) scale(.985); }
+  .stock-card.landed.stock-amber{ transform:translate(4px,-4px) rotate(-2deg) scale(.995); }
+  .stock-card.landed.stock-teal{ transform:translate(0,0) rotate(0deg) scale(1); }
+
+  .stock-card.collapsing{
+    transition:transform .55s cubic-bezier(.4,0,.2,1), opacity .45s ease;
+    opacity:0;
+    pointer-events:none;
+  }
+  .stock-card.collapsing.stock-purple{ transform:translate(-70px,-50px) rotate(-12deg) scale(.75); }
+  .stock-card.collapsing.stock-blue{ transform:translate(70px,-50px) rotate(12deg) scale(.75); }
+  .stock-card.collapsing.stock-amber{ transform:translate(-70px,50px) rotate(12deg) scale(.75); }
+  .stock-card.collapsing.stock-teal{ transform:translate(70px,50px) rotate(-12deg) scale(.75); }
+
+  .stock-banner{ position:relative; height:44%; overflow:hidden; }
+
+  .stock-dots{
+    position:absolute; inset:0;
+    background-image:radial-gradient(currentColor 1px, transparent 1.6px);
+    background-size:11px 11px;
+  }
+
+  .stock-purple .stock-banner{ background:linear-gradient(135deg,#FCCB4D,#F2B518); }
+  .stock-purple .stock-dots{ color:rgba(0,0,0,.18); }
+
+  .stock-blue .stock-banner{ background:linear-gradient(135deg,#BCC0C6,#9CA1A9); }
+  .stock-blue .stock-dots{ color:rgba(0,0,0,.15); }
+
+  .stock-amber .stock-banner{ background:linear-gradient(135deg,#3A3D42,#232529); }
+  .stock-amber .stock-dots{ color:rgba(255,255,255,.14); }
+
+  .stock-teal .stock-banner{ background:linear-gradient(135deg,#FFFFFF,#F1F1F1); }
+  .stock-teal .stock-dots{ color:rgba(0,0,0,.08); }
+
+  .stock-wave{ position:absolute; left:0; right:0; bottom:-1px; width:100%; height:42%; }
+  .stock-purple .stock-wave path{ fill:#2A1065; }
+  .stock-blue .stock-wave path{ fill:#0D2A5C; }
+  .stock-amber .stock-wave path{ fill:#A85D1B; }
+  .stock-teal .stock-wave path{ fill:#0D3B36; }
+
+  .stock-body{
+    position:relative;
+    height:56%;
+    display:flex;
+    align-items:center;
+    gap:5%;
+    padding:0 5% 14% 6%;
+  }
+
+  .stock-left{
+    flex:0 0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    margin-top:-30%;
+  }
+
+  .stock-photo{
+    width:78px; height:78px;
+    flex-shrink:0;
+    overflow:hidden;
+    border:3px solid;
+  }
+
+  .stock-photo.circle{ border-radius:50%; }
+  .stock-photo.block{ border-radius:14px; }
+  .stock-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  .stock-purple .stock-photo{ border-color:#F5B722; }
+  .stock-blue .stock-photo{ border-color:#B0B4BC; }
+  .stock-amber .stock-photo{ border-color:#3A3D42; }
+  .stock-teal .stock-photo{ border-color:#FFFFFF; }
+
+  .stock-name{
+    margin-top:10px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:800;
+    font-size:clamp(15px,2.4vw,20px);
+    white-space:nowrap;
+  }
+
+  .stock-purple .stock-name{ color:#F5B722; }
+  .stock-blue .stock-name{ color:#C7CBD1; }
+  .stock-amber .stock-name{ color:#F1EBE1; }
+  .stock-teal .stock-name{ color:#FFFFFF; }
+
+  .stock-right{
+    flex:1;
+    min-width:0;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:2px;
+    padding-left:5%;
+    position:relative;
+  }
+
+  .stock-right::before{
+    content:'';
+    position:absolute;
+    left:0; top:6%; bottom:6%;
+    width:1px;
+  }
+
+  .stock-purple .stock-right::before{ background:linear-gradient(180deg, transparent, #F5B722, transparent); }
+  .stock-blue .stock-right::before{ background:linear-gradient(180deg, transparent, #B0B4BC, transparent); }
+  .stock-amber .stock-right::before{ background:linear-gradient(180deg, transparent, #3A3D42, transparent); }
+  .stock-teal .stock-right::before{ background:linear-gradient(180deg, transparent, #FFFFFF, transparent); }
+
+  .stock-tag{
+    display:flex;
+    align-items:center;
+    gap:3%;
+    font-size:clamp(10.5px,1.7vw,13.5px);
+    font-weight:600;
+    padding:5% 0;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .stock-tag:last-child{ border-bottom:none; }
+
+  .stock-purple .stock-tag{ color:#fff; }
+  .stock-blue .stock-tag{ color:#fff; }
+  .stock-amber .stock-tag{ color:#F1EBE1; }
+  .stock-teal .stock-tag{ color:#fff; }
+
+  .stock-tag-ic{
+    width:22px; height:22px;
+    flex-shrink:0;
+    border-radius:7px;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(255,255,255,.1);
+  }
+
+  .stock-tag-ic svg{ width:11px; height:11px; }
+
+  .stock-purple .stock-tag-ic{ color:#F5B722; }
+  .stock-blue .stock-tag-ic{ color:#B0B4BC; }
+  .stock-amber .stock-tag-ic{ background:rgba(0,0,0,.22); color:#F1EBE1; }
+  .stock-teal .stock-tag-ic{ color:#FFFFFF; }
+
+  .stock-cta{
+    position:absolute;
+    right:5%; bottom:8%;
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:800;
+    font-size:clamp(10.5px,1.6vw,13px);
+    padding:8px 16px;
+    border-radius:999px;
+    box-shadow:0 10px 22px rgba(0,0,0,.3);
+  }
+
+  .stock-cta svg{ width:13px; height:13px; }
+
+  .stock-purple .stock-cta{ background:#F5B722; color:#2A1065; }
+  .stock-blue .stock-cta{ background:#B0B4BC; color:#0D2A5C; }
+  .stock-amber .stock-cta{ background:#2C2F33; color:#F1EBE1; }
+  .stock-teal .stock-cta{ background:#FFFFFF; color:#0D3B36; }
+
+  .tap-hint{
+    margin-top:30px;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:800;
+    font-size:13px;
+    letter-spacing:.16em;
+    color:var(--text-mid);
+    opacity:0;
+    transition:opacity .5s ease;
+    animation:tapFloat 1.8s ease-in-out infinite;
+  }
+
+  .tap-hint.show{ opacity:1; }
+
+  @keyframes tapFloat{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(8px); }
+  }
+
+  .stock-progress{
+    display:flex;
+    gap:8px;
+    margin-top:22px;
+  }
+
+  .stock-progress span{
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--card-border);
+    transition:background .3s ease, transform .3s ease;
+  }
+
+  .stock-progress span.on{ background:var(--purple); transform:scale(1.3); }
+
+  .unstocked-wrap{ display:none; }
+  .unstocked-wrap.visible{ display:block; animation:fadeUp .6s cubic-bezier(.16,1,.3,1); }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(20px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .stock-driver{ height:auto; }
+    .stock-stage{ position:relative; height:auto; padding:20px 0; }
+    .stock-card{ position:relative; opacity:1 !important; transform:none !important; margin-bottom:16px; transition:none; }
+    .stock-stack{ display:flex; flex-direction:column; aspect-ratio:auto; gap:16px; }
+    .tap-hint{ animation:none; }
+  }
+
+  @media (max-width:860px){
+    .stock-driver{ height:auto; }
+    .stock-stage{ position:relative; height:auto; padding:10px 0 0; }
+    .stock-stack{ width:100%; aspect-ratio:1.5/1; }
+    .stock-photo{ width:60px; height:60px; }
+    .stock-name{ font-size:15px; }
   }
 
   /* ============ RESUME CARDS ============ */
@@ -780,41 +1046,135 @@
 
 <section class="section" id="resumes">
   <div class="wrap">
-    <h2 class="section-kicker reveal">Choose the role you'd like to know me for.</h2>
-    <div class="resume-grid">
-      <a class="resume-card card-purple reveal" href="cm.html">
-        <div class="resume-card-image"><img src="src/cm-rmm.jpg" alt="Community Operations resume cover" loading="lazy"></div>
-        <div class="resume-card-body">
-          <div class="card-top"><span class="card-dot"></span><h3>Community Operations</h3></div>
-          <p>Managing communities. Building trust. Supporting users. Strengthening engagement.</p>
-          <span class="card-cta">Explore Community Experience <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+
+    <!-- STOCKED STACK -->
+    <div class="stock-driver" id="stockDriver">
+    <div class="stock-stage" id="stockStage">
+      <div class="stock-stack" id="stockStack">
+
+        <div class="stock-card stock-purple" data-dir="top-right" role="button" tabindex="0" aria-label="Resume collection, tap to view all four resumes">
+          <div class="stock-banner">
+            <div class="stock-dots"></div>
+            <svg class="stock-wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0,0 H400 V22 C320,22 300,54 250,54 C205,54 185,20 140,20 C95,20 65,34 0,30 Z"/></svg>
+          </div>
+          <div class="stock-body">
+            <div class="stock-left">
+              <div class="stock-photo circle"><img src="src/IMG_0804.jpg" alt="Uche Japheth"></div>
+              <div class="stock-name">Uche Japheth</div>
+            </div>
+            <div class="stock-right">
+              <div class="stock-tag"><span class="stock-tag-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3 3-5 7-5s7 2 7 5"/><circle cx="17" cy="9" r="2.3"/><path d="M16 14.3c2.6.4 4.5 1.9 4.5 3.7"/></svg></span>Web3 Community Moderator</div>
+              <div class="stock-tag"><span class="stock-tag-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>Community Operations</div>
+              <div class="stock-tag"><span class="stock-tag-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg></span>Growth</div>
+            </div>
+          </div>
+          <span class="stock-cta">View Resume <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg></span>
         </div>
-      </a>
-      <a class="resume-card card-blue reveal" href="smm.html">
-        <div class="resume-card-image"><img src="src/smm-rmm.jpg" alt="Social Media &amp; Brand Growth resume cover" loading="lazy"></div>
-        <div class="resume-card-body">
-          <div class="card-top"><span class="card-dot"></span><h3>Social Media &amp; Brand Growth</h3></div>
-          <p>Communication. Campaigns. Content. Community.</p>
-          <span class="card-cta">See Brand &amp; Growth Experience <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+
+        <div class="stock-card stock-blue" data-dir="left" role="button" tabindex="0" aria-label="Resume collection, tap to view all four resumes">
+          <div class="stock-banner">
+            <div class="stock-dots"></div>
+            <svg class="stock-wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0,0 H400 V22 C320,22 300,54 250,54 C205,54 185,20 140,20 C95,20 65,34 0,30 Z"/></svg>
+          </div>
+          <div class="stock-body">
+            <div class="stock-left">
+              <div class="stock-photo block"><img src="src/smm-hpf.jpg" alt="Uche Japheth"></div>
+              <div class="stock-name">Uche Japheth</div>
+            </div>
+            <div class="stock-right">
+              <div class="stock-tag"><span class="stock-tag-ic"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span>Social Media Management</div>
+              <div class="stock-tag"><span class="stock-tag-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg></span>Brand Growth</div>
+              <div class="stock-tag"><span class="stock-tag-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H8l-4 4z"/></svg></span>Content Strategy</div>
+            </div>
+          </div>
+          <span class="stock-cta">View Resume <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg></span>
         </div>
-      </a>
-      <a class="resume-card card-amber reveal" href="ops.html">
-        <div class="resume-card-image"><img src="src/ops-rmm.jpg" alt="Operations Coordinator resume cover" loading="lazy"></div>
-        <div class="resume-card-body">
-          <div class="card-top"><span class="card-dot"></span><h3>Operations Coordinator</h3></div>
-          <p>Systems. Organization. Documentation. AI Workflows.</p>
-          <span class="card-cta">Review Operations Experience <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+
+        <div class="stock-card stock-amber" data-dir="top-left" role="button" tabindex="0" aria-label="Resume collection, tap to view all four resumes">
+          <div class="stock-banner">
+            <div class="stock-dots"></div>
+            <svg class="stock-wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0,0 H400 V22 C320,22 300,54 250,54 C205,54 185,20 140,20 C95,20 65,34 0,30 Z"/></svg>
+          </div>
+          <div class="stock-body">
+            <div class="stock-left">
+              <div class="stock-photo block"><img src="src/ops-hpf.jpg" alt="Uche Japheth"></div>
+              <div class="stock-name">Uche Japheth</div>
+            </div>
+            <div class="stock-right">
+              <div class="stock-tag"><span class="stock-tag-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18"/></svg></span>Operations Coordination</div>
+              <div class="stock-tag"><span class="stock-tag-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg></span>Virtual Assistance</div>
+              <div class="stock-tag"><span class="stock-tag-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2 4 5v6c0 5 3.4 8.7 8 11 4.6-2.3 8-6 8-11V5l-8-3Z"/></svg></span>AI-Driven Workflows</div>
+            </div>
+          </div>
+          <span class="stock-cta">View Resume <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg></span>
         </div>
-      </a>
-      <a class="resume-card card-teal reveal" href="data.html">
-        <div class="resume-card-image"><img src="src/data-rmm.jpg" alt="Junior Data Analyst resume cover" loading="lazy"></div>
-        <div class="resume-card-body">
-          <div class="card-top"><span class="card-dot"></span><h3>Junior Data Analyst</h3></div>
-          <p>Data. Insights. Reporting. Decision Support.</p>
-          <span class="card-cta">Discover My Analytics Experience <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+
+        <div class="stock-card stock-teal" data-dir="bottom" role="button" tabindex="0" aria-label="Resume collection, tap to view all four resumes">
+          <div class="stock-banner">
+            <div class="stock-dots"></div>
+            <svg class="stock-wave" viewBox="0 0 400 60" preserveAspectRatio="none"><path d="M0,0 H400 V22 C320,22 300,54 250,54 C205,54 185,20 140,20 C95,20 65,34 0,30 Z"/></svg>
+          </div>
+          <div class="stock-body">
+            <div class="stock-left">
+              <div class="stock-photo circle"><img src="src/data-hpf.jpg" alt="Uche Japheth"></div>
+              <div class="stock-name">Uche Japheth</div>
+            </div>
+            <div class="stock-right">
+              <div class="stock-tag"><span class="stock-tag-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 4v16"/></svg></span>Data Analysis</div>
+              <div class="stock-tag"><span class="stock-tag-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 3v3M15 3v3M8 12h8M8 16h5"/></svg></span>Reporting</div>
+              <div class="stock-tag"><span class="stock-tag-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/></svg></span>AI-Assisted Insights</div>
+            </div>
+          </div>
+          <span class="stock-cta">View Resume <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="m9 6 6 6-6 6"/></svg></span>
         </div>
-      </a>
+
+      </div>
+      <div class="stock-progress" id="stockProgress">
+        <span></span><span></span><span></span><span></span>
+      </div>
+      <div class="tap-hint" id="tapHint">TAP!</div>
     </div>
+    </div>
+
+    <!-- UNSTOCKED GRID -->
+    <div class="unstocked-wrap" id="unstockedWrap">
+      <h2 class="section-kicker">Choose the role you'd like to know me for.</h2>
+      <div class="resume-grid" id="resumeGrid">
+        <a class="resume-card card-purple" href="cm.html">
+          <div class="resume-card-image"><img src="src/cm-rmm.jpg" alt="Community Operations resume cover" loading="lazy"></div>
+          <div class="resume-card-body">
+            <div class="card-top"><span class="card-dot"></span><h3>Community Operations</h3></div>
+            <p>Managing communities. Building trust. Supporting users. Strengthening engagement.</p>
+            <span class="card-cta">Explore Community Experience <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+        <a class="resume-card card-blue" href="smm.html">
+          <div class="resume-card-image"><img src="src/smm-rmm.jpg" alt="Social Media &amp; Brand Growth resume cover" loading="lazy"></div>
+          <div class="resume-card-body">
+            <div class="card-top"><span class="card-dot"></span><h3>Social Media &amp; Brand Growth</h3></div>
+            <p>Communication. Campaigns. Content. Community.</p>
+            <span class="card-cta">See Brand &amp; Growth Experience <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+        <a class="resume-card card-amber" href="ops.html">
+          <div class="resume-card-image"><img src="src/ops-rmm.jpg" alt="Operations Coordinator resume cover" loading="lazy"></div>
+          <div class="resume-card-body">
+            <div class="card-top"><span class="card-dot"></span><h3>Operations Coordinator</h3></div>
+            <p>Systems. Organization. Documentation. AI Workflows.</p>
+            <span class="card-cta">Review Operations Experience <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+        <a class="resume-card card-teal" href="data.html">
+          <div class="resume-card-image"><img src="src/data-rmm.jpg" alt="Junior Data Analyst resume cover" loading="lazy"></div>
+          <div class="resume-card-body">
+            <div class="card-top"><span class="card-dot"></span><h3>Junior Data Analyst</h3></div>
+            <p>Data. Insights. Reporting. Decision Support.</p>
+            <span class="card-cta">Discover My Analytics Experience <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+          </div>
+        </a>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1009,6 +1369,115 @@
     });
   })();
 
+  // Stock card stack controller
+  (function(){
+    var driver = document.getElementById('stockDriver');
+    var stage = document.getElementById('stockStage');
+    var cards = Array.prototype.slice.call(document.querySelectorAll('.stock-card'));
+    var tapHint = document.getElementById('tapHint');
+    var progressDots = document.querySelectorAll('#stockProgress span');
+    var unstockedWrap = document.getElementById('unstockedWrap');
+    if (!driver || !stage || !cards.length) return;
+
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var isMobile = window.matchMedia('(max-width: 860px)').matches;
+    var collapsed = false;
+    var landedCount = 0;
+
+    function setLanded(n){
+      landedCount = n;
+      cards.forEach(function(card, i){
+        if (i < n) card.classList.add('landed');
+        else card.classList.remove('landed');
+      });
+      progressDots.forEach(function(dot, i){
+        dot.classList.toggle('on', i < n);
+      });
+      if (tapHint) tapHint.classList.toggle('show', n >= cards.length);
+    }
+
+    function collapse(){
+      if (collapsed) return;
+      collapsed = true;
+      if (tapHint) tapHint.classList.remove('show');
+
+      if (reduceMotion) {
+        driver.style.display = 'none';
+        unstockedWrap.classList.add('visible');
+        return;
+      }
+
+      cards.forEach(function(card, i){
+        card.style.transitionDelay = (i * 70) + 'ms';
+        card.classList.add('collapsing');
+      });
+
+      setTimeout(function(){
+        driver.style.display = 'none';
+        unstockedWrap.classList.add('visible');
+        if (isMobile) {
+          var lastCard = document.querySelector('#resumeGrid .resume-card:last-child');
+          if (lastCard) {
+            setTimeout(function(){
+              lastCard.scrollIntoView({ behavior:'smooth', block:'center' });
+            }, 150);
+          }
+        }
+      }, 650);
+    }
+
+    cards.forEach(function(card){
+      card.addEventListener('click', collapse);
+      card.addEventListener('keydown', function(e){
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); collapse(); }
+      });
+    });
+    if (tapHint) tapHint.addEventListener('click', collapse);
+
+    if (reduceMotion) {
+      setLanded(cards.length);
+      return;
+    }
+
+    if (isMobile) {
+      // Simple staggered entrance once the stack scrolls into view — no scroll-trapping
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting && !collapsed) {
+            cards.forEach(function(card, i){
+              setTimeout(function(){
+                card.classList.add('landed');
+                if (progressDots[i]) progressDots[i].classList.add('on');
+                if (i === cards.length - 1) {
+                  setTimeout(function(){ tapHint.classList.add('show'); }, 300);
+                }
+              }, i * 220);
+            });
+            io.disconnect();
+          }
+        });
+      }, { threshold: 0.35 });
+      io.observe(stage);
+      return;
+    }
+
+    // Desktop: sticky-scroll driven progress (native scroll, no wheel hijacking)
+    function onScroll(){
+      if (collapsed) return;
+      var rect = driver.getBoundingClientRect();
+      var total = rect.height - window.innerHeight;
+      if (total <= 0) { setLanded(cards.length); return; }
+      var scrolled = -rect.top;
+      var progress = Math.min(Math.max(scrolled / total, 0), 1);
+      var n = Math.min(cards.length, Math.floor(progress * cards.length + 0.0001));
+      if (progress >= 0.98) n = cards.length;
+      if (n !== landedCount) setLanded(n);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive:true });
+    onScroll();
+  })();
+
   // Card mouse-follow glow
   (function(){
     document.querySelectorAll('.resume-card').forEach(function(card){
@@ -1022,4 +1491,3 @@
 </script>
 </body>
 </html>
-
