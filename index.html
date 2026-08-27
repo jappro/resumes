@@ -286,6 +286,30 @@
 
   .nav-cta:hover{ transform:translateY(-2px); border-color:rgba(164,140,255,.5); background:rgba(164,140,255,.1); }
 
+  @media (max-width:960px){
+    .site-nav{
+      background:transparent;
+      border-bottom:none;
+      padding:12px 12px 0;
+    }
+    .nav-inner{
+      padding:11px 16px;
+      background:rgba(18,18,24,.62);
+      backdrop-filter:blur(22px);
+      -webkit-backdrop-filter:blur(22px);
+      border:1px solid rgba(255,255,255,.13);
+      border-radius:999px;
+      box-shadow:0 14px 34px rgba(0,0,0,.4);
+    }
+    .nav-mobile-menu{
+      margin:8px 12px 0;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.13);
+      background:rgba(18,18,24,.85);
+      box-shadow:0 14px 34px rgba(0,0,0,.4);
+    }
+  }
+
   .nav-hamburger{
     display:none;
     width:40px; height:40px;
@@ -306,7 +330,6 @@
     flex-direction:column;
     gap:2px;
     padding:8px 24px 22px;
-    border-top:1px solid rgba(255,255,255,.08);
     background:rgba(5,5,8,.97);
     backdrop-filter:blur(18px);
     -webkit-backdrop-filter:blur(18px);
@@ -485,7 +508,7 @@
     display:none;
     position:relative;
     width:100%;
-    aspect-ratio:1.32/1;
+    aspect-ratio:1/1.05;
     border-radius:26px;
     overflow:hidden;
     border:1px solid rgba(255,255,255,.14);
@@ -518,9 +541,10 @@
     position:absolute;
     left:50%; bottom:0;
     transform:translateX(-50%);
-    height:96%;
+    height:93%;
     width:auto;
-    max-width:88%;
+    max-width:82%;
+    aspect-ratio:898/1122;
     object-fit:contain;
     object-position:bottom;
     z-index:2;
@@ -726,12 +750,10 @@
   }
 
   @media (max-width:960px){
-    .hero-wrap{ grid-template-columns:1fr; padding:28px 20px 36px; text-align:center; }
+    .hero-wrap{ grid-template-columns:1fr; padding:28px 20px 36px; text-align:left; }
     .hero-badge{ display:none; }
     .hero-col-photo{ display:none; }
     .hero-mobile-photo{ display:block; }
-    .hero-accent-line{ margin-left:auto; margin-right:auto; }
-    .hero-sub, .hero-desc{ margin-left:auto; margin-right:auto; }
     .hero-btn-row{ flex-direction:column; width:100%; }
     .hero-btn-primary, .hero-btn-secondary{ width:100%; justify-content:center; }
     .strip-label{ display:block; }
@@ -1594,7 +1616,7 @@
       <span class="mp-icon mp-icon-community"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
       <span class="mp-icon mp-icon-systems"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></span>
       <span class="mp-icon mp-icon-growth"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17 9 11l4 4 8-8"/><path d="M15 7h6v6"/></svg></span>
-      <img class="mp-photo" src="src/UJ pfp.png" alt="Uche Japheth">
+      <img class="mp-photo" src="src/UJ pfp.png" alt="Uche Japheth" width="898" height="1122">
       <div class="mp-pill"><span class="mp-pill-dot"></span>Community is Product</div>
     </div>
 
