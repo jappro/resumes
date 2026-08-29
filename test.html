@@ -1,0 +1,148 @@
+<!-- ============================================================
+  PROFESSIONAL PHILOSOPHY — HEADER BLOCK (mobile-first)
+  Drop this in right after the hero section.
+  Uses the site's existing CSS variables (:root / [data-theme="dark"]).
+  Scoped under .phil- classes so nothing collides with existing styles.
+============================================================= -->
+
+<section class="phil-section" id="philosophy">
+  <div class="phil-header">
+
+    <div class="phil-bg" aria-hidden="true"></div>
+    <div class="phil-scrim" aria-hidden="true"></div>
+
+    <p class="phil-eyebrow">Professional Philosophy</p>
+
+    <h2 class="phil-heading">
+      The way I think about
+      <span class="phil-heading__accent">people, information, and products.</span>
+    </h2>
+
+    <p class="phil-intro">
+      My work across community, customer experience, content, operations, and data is guided
+      by a simple belief: the information around a product can help shape what it becomes
+      next&mdash;if someone knows how to listen, understand, and connect it.
+    </p>
+
+    <div class="phil-divider" aria-hidden="true">
+      <span class="phil-divider__line"></span>
+      <span class="phil-divider__spark">✦</span>
+      <span class="phil-divider__line"></span>
+    </div>
+
+  </div>
+
+  <!-- Philosophy cards will be appended here in the next stage -->
+  <div class="phil-cards"></div>
+
+</section>
+
+<style>
+  /* ---- scoped to the philosophy section only ---- */
+
+  .phil-section{
+    position:relative;
+    background:var(--bg);
+    padding:72px 24px 40px;
+    overflow:hidden;
+    isolation:isolate;
+  }
+
+  .phil-header{
+    position:relative;
+    max-width:640px;
+    margin:0 auto;
+    padding-top:8px;
+  }
+
+  /* full-bleed artwork behind the whole header block */
+  .phil-bg{
+    position:absolute;
+    inset:-24px;
+    background-image:url("src/mobile philosophy background head-image.jpg");
+    background-repeat:no-repeat;
+    background-position:right top;
+    background-size:cover;
+    z-index:0;
+  }
+
+  /* scrim: keeps the text column legible no matter where the artwork's
+     glow lands, while still letting it show through on the right/edges */
+  .phil-scrim{
+    position:absolute;
+    inset:-24px;
+    z-index:0;
+    background:
+      linear-gradient(115deg, var(--bg) 0%, var(--bg) 42%, transparent 78%),
+      linear-gradient(to bottom, transparent 55%, var(--bg) 96%);
+  }
+
+  /* ---------- eyebrow ---------- */
+  .phil-eyebrow{
+    position:relative;
+    z-index:2;
+    margin:0 0 18px;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    color:var(--purple);
+  }
+
+  /* ---------- heading ---------- */
+  .phil-heading{
+    position:relative;
+    z-index:2;
+    margin:0 0 22px;
+    font-size:clamp(28px, 7.5vw, 34px);
+    line-height:1.18;
+    font-weight:800;
+    letter-spacing:-0.01em;
+    color:var(--text-hi);
+  }
+
+  .phil-heading__accent{
+    display:block;
+    background:linear-gradient(100deg, var(--purple) 0%, var(--blue) 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  /* ---------- intro paragraph ---------- */
+  .phil-intro{
+    position:relative;
+    z-index:2;
+    margin:0;
+    max-width:56ch;
+    font-size:16px;
+    line-height:1.65;
+    color:var(--text-mid);
+  }
+
+  /* ---------- divider ---------- */
+  .phil-divider{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-top:36px;
+    max-width:220px;
+  }
+  .phil-divider__line{
+    flex:1;
+    height:1px;
+    background:linear-gradient(90deg, var(--card-border), transparent);
+  }
+  .phil-divider__spark{
+    font-size:13px;
+    color:var(--purple);
+    opacity:0.8;
+    line-height:1;
+  }
+
+  /* ---------- small phones ---------- */
+  @media (max-width:380px){
+    .phil-section{ padding:56px 18px 32px; }
+    .phil-heading{ font-size:26px; }
+  }
+</style>
