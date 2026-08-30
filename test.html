@@ -81,6 +81,7 @@
 
   .phil-section{
     position:relative;
+    z-index:2;
     background:var(--bg);
     padding:72px 24px 40px;
     overflow:hidden;
@@ -232,10 +233,11 @@
 
   .phil-body{
     position:relative;
+    z-index:1;
     overflow:hidden;
     background:var(--bg);
     min-height:100vh;
-    margin-top:-1px; /* collapses any subpixel seam against the header above */
+    margin-top:-160px; /* slides the artwork up so the header visually overlays it */
   }
 
   /* full-bleed artwork */
