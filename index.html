@@ -879,6 +879,30 @@
     overflow:hidden;
   }
 
+  .impact-card p.marquee-mode{
+    display:block;
+    -webkit-line-clamp:unset;
+    white-space:nowrap;
+    overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+    mask-image:linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+  }
+
+  .impact-desc-track{
+    display:inline-flex;
+    gap:26px;
+    animation:descMarquee 6.5s linear infinite;
+  }
+
+  @keyframes descMarquee{
+    0%{ transform:translateX(0); }
+    100%{ transform:translateX(-50%); }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .impact-desc-track{ animation:none; }
+  }
+
   .impact-message{
     position:relative;
     border-radius:24px;
@@ -2014,7 +2038,7 @@
           <span class="impact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
           <div class="impact-card-text">
             <h4>Web3 Community Builder</h4>
-            <p>Community Operations &amp; Engagement</p>
+            <p class="impact-desc">Community Operations &amp; Engagement</p>
           </div>
         </div>
       </div>
@@ -2024,7 +2048,7 @@
           <span class="impact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></span>
           <div class="impact-card-text">
             <h4>Content &amp; Growth</h4>
-            <p>Social Media Strategy &amp; Content Creation</p>
+            <p class="impact-desc">Social Media Strategy &amp; Content Creation</p>
           </div>
         </div>
       </div>
@@ -2034,7 +2058,7 @@
           <span class="impact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3.2"/><path d="M5.5 20c0-3.6 3-6 6.5-6s6.5 2.4 6.5 6"/></svg></span>
           <div class="impact-card-text">
             <h4>Customer Experience</h4>
-            <p>Voice of Customer &amp; Experience Insights</p>
+            <p class="impact-desc">Voice of Customer &amp; Experience Insights</p>
           </div>
         </div>
       </div>
@@ -2044,7 +2068,7 @@
           <span class="impact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg></span>
           <div class="impact-card-text">
             <h4>Operations &amp; Systems</h4>
-            <p>Process Improvement &amp; Workflow Design</p>
+            <p class="impact-desc">Process Improvement &amp; Workflow Design</p>
           </div>
         </div>
       </div>
@@ -2054,7 +2078,7 @@
           <span class="impact-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V13"/><path d="M11 20V8"/><path d="M18 20V4"/></svg></span>
           <div class="impact-card-text">
             <h4>Data &amp; Insights</h4>
-            <p>Data Analysis &amp; Reporting</p>
+            <p class="impact-desc">Data Analysis &amp; Reporting</p>
           </div>
         </div>
       </div>
@@ -2367,6 +2391,58 @@
 </footer>
 
 <script>
+  // Impact card description marquee — only when text is actually truncated on small screens
+  (function(){
+    var descs = Array.prototype.slice.call(document.querySelectorAll('.impact-desc'));
+    if (!descs.length) return;
+
+    descs.forEach(function(p){
+      if (!p.dataset.fullText) p.dataset.fullText = p.textContent.trim();
+    });
+
+    var resizeTimer;
+
+    function evaluate(){
+      var isMobile = window.matchMedia('(max-width:960px)').matches;
+
+      descs.forEach(function(p){
+        // Reset to plain state before re-measuring
+        p.classList.remove('marquee-mode');
+        p.textContent = p.dataset.fullText;
+
+        if (!isMobile) return;
+
+        // Force single-line measurement
+        var prevWhiteSpace = p.style.whiteSpace;
+        var prevClamp = p.style.webkitLineClamp;
+        p.style.whiteSpace = 'nowrap';
+        p.style.webkitLineClamp = 'unset';
+
+        var overflowing = p.scrollWidth > p.clientWidth + 1;
+
+        p.style.whiteSpace = prevWhiteSpace;
+        p.style.webkitLineClamp = prevClamp;
+
+        if (overflowing) {
+          var text = p.dataset.fullText;
+          p.classList.add('marquee-mode');
+          p.innerHTML =
+            '<span class="impact-desc-track">' +
+              '<span>' + text + '</span>' +
+              '<span aria-hidden="true">' + text + '</span>' +
+            '</span>';
+        }
+      });
+    }
+
+    evaluate();
+
+    window.addEventListener('resize', function(){
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(evaluate, 200);
+    }, { passive:true });
+  })();
+
   // Mobile nav hamburger toggle
   (function(){
     var btn = document.getElementById('navHamburger');
