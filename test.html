@@ -578,11 +578,12 @@
     position:relative;
     z-index:1;
     background:var(--bg);
+    --phil-header-overlap:40px;
     /* height is set inline via --phil-card-count below: N cards need
        N x 100vh of scroll distance for N-1 full transitions, plus the
        final 100vh so the last card gets its own full resting viewport */
     height:calc(var(--phil-card-count, 5) * 100vh);
-    margin-top:-160px; /* slides the artwork up so the header visually overlays it */
+    margin-top:calc(-1 * var(--phil-header-overlap)); /* slides the artwork up so the header visually overlays it */
   }
 
   /* pins the whole scene (background + card stack) in place while the
