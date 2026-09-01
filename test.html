@@ -109,6 +109,11 @@
     background-position:right top;
     background-size:112% auto;
     z-index:0;
+    pointer-events:none;
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    user-select:none;
+    -webkit-user-drag:none;
   }
 
   /* coded glow stars over the artwork's right side — not part of the
@@ -605,6 +610,11 @@
     background-position:center top;
     background-size:cover;
     z-index:0;
+    pointer-events:none;
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    user-select:none;
+    -webkit-user-drag:none;
   }
 
   /* blends the header's background color into the artwork so the seam
@@ -663,7 +673,7 @@
     flex-direction:column;
     max-width:640px;
     margin:0 auto;
-    height:660px; /* card 01's natural height, locked in as the shared default for every card */
+    height:680px; /* shared default height for every card, tuned for readable body-text sizing */
     background:rgba(9,9,13,0.86);
     border:1px solid var(--card-border);
     border-radius:22px;
@@ -712,8 +722,8 @@
   }
   .phil-card__body p{
     margin:0;
-    font-size:15.5px;
-    line-height:1.45;
+    font-size:16px;
+    line-height:1.5;
     color:var(--text-mid);
   }
 
@@ -785,14 +795,14 @@
   }
   .phil-concept__title{
     margin:0;
-    font-size:15.5px;
+    font-size:16px;
     font-weight:700;
     color:var(--text-hi);
   }
   .phil-concept__text{
     margin:0;
-    font-size:13.5px;
-    line-height:1.48;
+    font-size:14px;
+    line-height:1.5;
     color:var(--text-mid);
   }
   .phil-concept__hit{
@@ -822,7 +832,56 @@
   @media (max-width:380px){
     .phil-card{ padding:22px 18px 26px; }
     .phil-card__body p{ font-size:15px; }
-    .phil-concept__text{ font-size:12px; }
+    .phil-concept__text{ font-size:12.5px; }
+  }
+</style>
+
+<style>
+  /* ============================================================
+     PROFESSIONAL PHILOSOPHY — responsive text scaling
+     Mobile-first. These breakpoints cover larger phones, unfolded
+     foldables, and tablets while staying within this mobile-style
+     single-column layout (a dedicated desktop layout is a separate
+     later stage — these are readability upgrades only).
+  ============================================================= */
+
+  /* ---------- large phones / unfolded foldables ---------- */
+  @media (min-width:600px){
+    .phil-eyebrow{ font-size:13.5px; }
+    .phil-heading{ font-size:clamp(30px, 5.2vw, 38px); }
+    .phil-intro{ font-size:17px; max-width:60ch; }
+
+    .phil-card{ height:720px; }
+    .phil-card__heading{ font-size:clamp(27px, 4.4vw, 32px); }
+    .phil-card__heading--flow{ font-size:clamp(23px, 4vw, 27px); }
+    .phil-card__body p{ font-size:17px; line-height:1.55; }
+    .phil-card__body{ gap:22px; }
+
+    .phil-concept__icon{ width:30px; height:30px; }
+    .phil-concept__title{ font-size:16.5px; }
+    .phil-concept__text{ font-size:14.5px; line-height:1.52; }
+  }
+
+  /* ---------- tablets ---------- */
+  @media (min-width:768px){
+    .phil-eyebrow{ font-size:14.5px; }
+    .phil-heading{ font-size:clamp(36px, 4.4vw, 44px); }
+    .phil-intro{ font-size:18.5px; max-width:64ch; }
+
+    .phil-card{ height:820px; max-width:680px; }
+    .phil-header{ max-width:680px; }
+    .phil-card__heading{ font-size:clamp(30px, 3.4vw, 36px); }
+    .phil-card__heading--flow{ font-size:clamp(25px, 3vw, 29px); }
+    .phil-card__body p{ font-size:18px; line-height:1.6; }
+    .phil-card__body{ gap:24px; }
+    .phil-card{ padding:32px 30px 36px; }
+
+    .phil-card__diagram{ max-width:320px; }
+    .phil-card__diagram--icon{ max-width:190px; }
+
+    .phil-concept__icon{ width:34px; height:34px; }
+    .phil-concept__title{ font-size:17.5px; }
+    .phil-concept__text{ font-size:15px; line-height:1.55; }
   }
 </style>
 
