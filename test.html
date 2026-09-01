@@ -220,11 +220,13 @@
 
 <section class="phil-body" id="philosophy-body">
 
-  <div class="phil-body-bg" aria-hidden="true"></div>
-  <div class="phil-body-fade" aria-hidden="true"></div>
+  <div class="phil-body-sticky">
 
-  <!-- Cards will be built and stacked here in the next stage -->
-  <div class="phil-body-cards">
+    <div class="phil-body-bg" aria-hidden="true"></div>
+    <div class="phil-body-fade" aria-hidden="true"></div>
+
+    <!-- Cards will be built and stacked here in the next stage -->
+    <div class="phil-body-cards">
 <!-- ============================================================
   PROFESSIONAL PHILOSOPHY — CARD 01 (default / first card)
   Sits inside .phil-body-cards, on top of the body background.
@@ -464,8 +466,10 @@
 
   <div class="phil-card__body">
     <p>Real problems rarely arrive according to job titles or departments.</p>
-    <p>The question isn&rsquo;t who or which department owns the problem.<br>The question is <span class="phil-hit">&ldquo;who&mdash;or where&mdash;can help solve it.&rdquo;</span></p>
-    <p>The important thing is not keeping a problem inside the function where it was discovered.<br>It is helping the right information reach the right place.</p>
+    <p>The question isn&rsquo;t who or which department owns the problem.</p>
+    <p>The question is <span class="phil-hit">&ldquo;who&mdash;or where&mdash;can help solve it.&rdquo;</span></p>
+    <p>The important thing is not keeping a problem inside the function where it was discovered.</p>
+    <p>It is helping the right information reach the right place.</p>
   </div>
 
   <div class="phil-card__diagram phil-card__diagram--icon" aria-hidden="true">
@@ -561,6 +565,8 @@
   </div>
 
 </article>
+    </div>
+
   </div>
 
 </section>
@@ -571,10 +577,22 @@
   .phil-body{
     position:relative;
     z-index:1;
-    overflow:hidden;
     background:var(--bg);
-    min-height:100vh;
+    /* height is set inline via --phil-card-count below: N cards need
+       N x 100vh of scroll distance for N-1 full transitions, plus the
+       final 100vh so the last card gets its own full resting viewport */
+    height:calc(var(--phil-card-count, 5) * 100vh);
     margin-top:-160px; /* slides the artwork up so the header visually overlays it */
+  }
+
+  /* pins the whole scene (background + card stack) in place while the
+     tall .phil-body scrolls underneath — releases naturally once the
+     section's bottom edge reaches the viewport, continuing normal scroll */
+  .phil-body-sticky{
+    position:sticky;
+    top:0;
+    height:100vh;
+    overflow:hidden;
   }
 
   /* full-bleed artwork */
@@ -603,14 +621,32 @@
   .phil-body-cards{
     position:relative;
     z-index:2;
-    min-height:100%;
-    padding:190px 20px 60px;
+    height:100%;
   }
 
   /* ---------- small phones ---------- */
   @media (max-width:380px){
     .phil-body-fade{ height:110px; }
   }
+</style>
+
+<style>
+  /* card stack positioning: each card is centered in the sticky
+     viewport; JS drives the translateY that slides each one up over
+     the last. Cards stack visually via z-index (data-card-index). */
+  .phil-body-cards .phil-card{
+    position:absolute;
+    left:20px;
+    right:20px;
+    top:50%;
+    margin:0 auto;
+    will-change:transform;
+  }
+  .phil-body-cards .phil-card[data-card-index="1"]{ z-index:1; }
+  .phil-body-cards .phil-card[data-card-index="2"]{ z-index:2; }
+  .phil-body-cards .phil-card[data-card-index="3"]{ z-index:3; }
+  .phil-body-cards .phil-card[data-card-index="4"]{ z-index:4; }
+  .phil-body-cards .phil-card[data-card-index="5"]{ z-index:5; }
 </style>
 
 <style>
@@ -788,6 +824,94 @@
     .phil-concept__text{ font-size:12px; }
   }
 </style>
+
+<script>
+(function(){
+  /* ============================================================
+     PROFESSIONAL PHILOSOPHY — scroll-pinned card stack
+     While the user scrolls through #philosophy-body, the background
+     stays pinned and each card slides up from below to cover the
+     previous one — reversing cleanly on scroll-up. Releases to normal
+     page scroll once the last card has settled.
+  ============================================================= */
+
+  var section = document.getElementById('philosophy-body');
+  if(!section) return;
+
+  var cardsWrap = section.querySelector('.phil-body-cards');
+  var cards = cardsWrap ? Array.prototype.slice.call(cardsWrap.querySelectorAll('.phil-card')) : [];
+  var count = cards.length;
+  if(count < 2) return;
+
+  // drive the section's scroll height (N x 100vh) from the actual
+  // card count, so this keeps working if a card is added or removed
+  section.style.setProperty('--phil-card-count', count);
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ease = reduceMotion ? 1 : 0.15;
+
+  var targetProgress = 0;
+  var currentProgress = 0;
+  var rafId = null;
+
+  function computeTarget(){
+    var scrollable = section.offsetHeight - window.innerHeight;
+    if(scrollable <= 0){ targetProgress = 0; return; }
+    var rectTop = section.getBoundingClientRect().top;
+    var scrolledIn = -rectTop;
+    var clamped = Math.max(0, Math.min(scrolledIn, scrollable));
+    targetProgress = (clamped / scrollable) * (count - 1);
+  }
+
+  function applyProgress(p){
+    var vh = window.innerHeight;
+    for(var i = 0; i < count; i++){
+      var card = cards[i];
+      if(i === 0){
+        card.style.transform = 'translateY(-50%)';
+        continue;
+      }
+      var local = p - (i - 1);
+      if(local < 0) local = 0;
+      if(local > 1) local = 1;
+      var remaining = 1 - local;
+      var slidePx = remaining * vh;
+      card.style.transform = 'translateY(calc(-50% + ' + slidePx + 'px))';
+    }
+  }
+
+  function tick(){
+    currentProgress += (targetProgress - currentProgress) * ease;
+    if(Math.abs(targetProgress - currentProgress) < 0.0005){
+      currentProgress = targetProgress;
+      applyProgress(currentProgress);
+      rafId = null;
+      return;
+    }
+    applyProgress(currentProgress);
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function requestTick(){
+    if(rafId === null){
+      rafId = requestAnimationFrame(tick);
+    }
+  }
+
+  function onScrollOrResize(){
+    computeTarget();
+    requestTick();
+  }
+
+  window.addEventListener('scroll', onScrollOrResize, { passive: true });
+  window.addEventListener('resize', onScrollOrResize);
+
+  // set initial state instantly — no animation on page load
+  computeTarget();
+  currentProgress = targetProgress;
+  applyProgress(currentProgress);
+})();
+</script>
 
 </body>
 </html>
