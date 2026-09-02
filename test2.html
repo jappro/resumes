@@ -7,12 +7,11 @@
 <!-- ============================================================
   CORE CAPABILITIES SECTION — standalone test build
   Mobile: header, subheading, quote box, 5 cards, capability explorer.
-  Desktop (min-width: 900px) — Step 1 only so far: header + quote
-  box split 50/50. Cards and explorer are NOT yet desktop-adapted —
-  they'll still render using their mobile layout above 900px until
-  we do those steps.
+  Desktop (min-width: 1024px) — Step 1 only so far: header + quote
+  box split 40/60, with clamp()-based fluid scaling above that.
+  Cards and explorer are NOT yet desktop-adapted — they'll still
+  render using their mobile layout above 1024px until we do those steps.
 ============================================================= -->
-
 
 <style>
 
@@ -78,8 +77,9 @@
 
   .cc-subheading{
     margin:0 0 32px;
-    color:var(--text-mid);
+    color:var(--text-hi);
     font-size:17px;
+    font-weight:600;
     line-height:1.75;
     text-align:left;
     max-width:100%;
@@ -562,15 +562,18 @@
     .cc-title{ font-size:44px; }
   }
 
-  /* ============ DESKTOP: Step 1 — header + quote split 50/50 ============ */
-  @media (min-width:900px){
-    .cc-inner{ max-width:1120px; }
+  /* ============ DESKTOP: Step 1 — header + quote split ============
+     Starts at 1024px (large tablet / small laptop) instead of 900px,
+     and uses clamp()-based sizing above that so it keeps scaling
+     gracefully on large monitors instead of capping out. */
+  @media (min-width:1024px){
+    .cc-inner{ max-width:clamp(1024px, 82vw, 1440px); }
 
     .cc-head-grid{
       display:grid;
-      grid-template-columns:1fr 1fr;
+      grid-template-columns:2fr 3fr; /* 40% left / 60% right */
       align-items:stretch; /* makes both columns the same height, top-aligned */
-      gap:56px;
+      gap:clamp(40px, 4vw, 72px);
       margin-bottom:40px;
     }
 
@@ -586,7 +589,10 @@
        markup ("My goal was never") as Title Case without touching
        the underlying text — same trick used nowhere else, kept local
        to this rule on purpose. */
-    .cc-title{ text-align:left; }
+    .cc-title{
+      text-align:left;
+      font-size:clamp(38px, 3.4vw, 56px);
+    }
     .cc-title-line--hi{ text-transform:capitalize; }
     .cc-title-line--purple,
     .cc-title-line--green{
@@ -594,7 +600,7 @@
                           natural whitespace between the two <span>s */
     }
 
-    .cc-subheading{ font-size:19px; max-width:46ch; }
+    .cc-subheading{ font-size:clamp(17px, 1.1vw, 20px); max-width:44ch; }
 
     .cc-head-col--right{ display:flex; }
 
@@ -604,6 +610,7 @@
       flex-direction:column;
       justify-content:center;
       margin-bottom:0;
+      padding:clamp(22px, 2.4vw, 34px) clamp(22px, 2.6vw, 36px);
     }
     /* full text, no internal scroll, once there's room to be wide instead of tall */
     .cc-quote-body{
@@ -611,6 +618,7 @@
       overflow:visible;
       padding-right:0;
     }
+    .cc-quote-text{ font-size:clamp(15.5px, 1.05vw, 17px); }
     .cc-quote-scrollhint{ display:none; }
   }
 
