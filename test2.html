@@ -1,27 +1,21 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Professional Philosophy Section — Preview</title>
-
-  <!-- ============================================================
-  CORE CAPABILITIES SECTION — v2 (first screen only)
-  Header + subheading + expandable quote + 5 capability cards.
-  Explorer/expanded-preview panel intentionally NOT included yet —
-  build that after this screen is approved.
-
-  Namespacing: all classes prefixed `cc-`. No bare element
-  selectors. Scoped under .cc-section.
-
-  Fonts use fixed px sizes + min-width breakpoints instead of
-  vw-based clamp(), since vw sizing miscalculates once this
-  section sits inside a narrower content wrapper rather than
-  spanning the full viewport.
+<title>Core Capabilities — Preview</title>
+<!-- ============================================================
+  CORE CAPABILITIES SECTION — standalone test build
+  Mobile: header, subheading, quote box, 5 cards, capability explorer.
+  Desktop (min-width: 900px) — Step 1 only so far: header + quote
+  box split 50/50. Cards and explorer are NOT yet desktop-adapted —
+  they'll still render using their mobile layout above 900px until
+  we do those steps.
 ============================================================= -->
 
-<!-- ============ PREVIEW-ONLY TOKENS (delete when plugging in) ============ -->
+
 <style>
+
   :root{
     --bg:#fafafa; --bg-alt:#f2f2f4;
     --card-bg:rgba(255,255,255,0.72); --card-border:rgba(15,15,20,0.07);
@@ -45,126 +39,10 @@
     color-scheme:dark;
   }
   body{ background:var(--bg); margin:0; }
+
 </style>
-</head>
-<body>
-<!-- ============ END PREVIEW-ONLY TOKENS ============ -->
-
-<section class="cc-section" data-theme="dark" id="capabilities">
-
-  <div class="cc-inner">
-
-    <!-- Header -->
-    <h2 class="cc-title">
-      <span class="cc-title-line cc-title-line--hi">My goal was never</span>
-      <span class="cc-title-line cc-title-line--purple">to do</span>
-      <span class="cc-title-line cc-title-line--green">EVERYTHING.</span>
-    </h2>
-
-    <p class="cc-subheading">
-      Each of my core skills helps me understand how different functions
-      systematically contribute to improving a product.
-    </p>
-
-    <!-- Expandable boxed quote (scrolls inside the box) -->
-    <div class="cc-quote">
-      <span class="cc-quote-mark cc-quote-mark--open" aria-hidden="true">&ldquo;</span>
-      <span class="cc-quote-mark cc-quote-mark--close" aria-hidden="true">&rdquo;</span>
-
-      <div class="cc-quote-scrollhint cc-quote-scrollhint--up" id="ccScrollUp" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 15l7-7 7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-      <div class="cc-quote-scrollhint cc-quote-scrollhint--down" id="ccScrollDown" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 9l7 7 7-7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </div>
-
-      <div class="cc-quote-body" id="ccQuoteBody">
-        <p class="cc-quote-text">
-          These aren&rsquo;t five unrelated jobs to me.
-          They&rsquo;re five angles of the same system.
-        </p>
-        <p class="cc-quote-text">
-          My work is about <span class="cc-hl cc-hl--purple">reducing the gaps</span> between
-          people, information, and the decisions that shape a product, then using what I learn to
-          <span class="cc-hl cc-hl--purple">build better communities</span>,
-          <span class="cc-hl cc-hl--purple">improve experiences</span>,
-          <span class="cc-hl cc-hl--green">create structure</span>, and
-          <span class="cc-hl cc-hl--purple">support better decisions</span>.
-        </p>
-        <p class="cc-quote-text">
-          I don&rsquo;t need to own every part of the system.
-          <span class="cc-hl cc-hl--green">I help the parts work better together.</span>
-        </p>
-      </div>
-    </div>
-
-    <!-- Five capability cards + explorer share this stage -->
-    <div class="cc-stage">
-      <div class="cc-cap-list" role="list" id="ccCapList">
-        <!-- rows injected by JS -->
-      </div>
-
-      <!-- Capability Explorer (full-bleed panel, hidden until a card is clicked) -->
-      <div class="cc-explorer" id="ccExplorer" hidden>
-        <div class="cc-explorer-inner">
-
-          <div class="cc-explorer-topbar">
-            <button type="button" class="cc-explorer-back" id="ccBack">
-              <span class="cc-back-arrow" aria-hidden="true">&larr;</span> Back to Capabilities
-            </button>
-            <button type="button" class="cc-explorer-close" id="ccClose" aria-label="Close capability explorer">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-            </button>
-          </div>
-
-          <span class="cc-explorer-badge">CAPABILITY EXPLORER</span>
-
-          <div class="cc-explorer-head">
-            <span class="cc-explorer-number" id="ccExplorerNumber">01</span>
-            <h3 class="cc-explorer-title" id="ccExplorerTitle"></h3>
-          </div>
-          <p class="cc-explorer-line" id="ccExplorerLine"></p>
-
-          <div class="cc-explorer-divider" aria-hidden="true"></div>
-
-          <span class="cc-explorer-label">HOW I APPROACH IT</span>
-          <div class="cc-steps" id="ccSteps">
-            <!-- steps injected by JS -->
-          </div>
-
-          <div class="cc-explorer-divider" aria-hidden="true"></div>
-
-          <span class="cc-explorer-label">WHAT THIS CREATES</span>
-          <div class="cc-creates-box">
-            <span class="cc-creates-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 8l-9-5-9 5 9 5 9-5z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 8v8l9 5 9-5V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 13v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-            </span>
-            <p class="cc-creates-text" id="ccCreatesText"></p>
-          </div>
-
-          <span class="cc-explorer-label">EXAMPLES OF WHERE I&rsquo;VE DONE THIS</span>
-          <ul class="cc-examples-list" id="ccExamplesList">
-            <!-- examples injected by JS -->
-          </ul>
-
-        </div>
-
-        <div class="cc-explorer-footer">
-          <button type="button" class="cc-nav cc-nav--prev" id="ccPrev" aria-label="Previous capability">
-            <span aria-hidden="true">&larr;</span> Previous
-          </button>
-          <span class="cc-nav-counter" id="ccCounter">1 / 5</span>
-          <button type="button" class="cc-nav cc-nav--next" id="ccNext" aria-label="Next capability">
-            Next <span aria-hidden="true">&rarr;</span>
-          </button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-</section>
-
 <style>
+
   /* ===================== CORE CAPABILITIES — SCOPED STYLES ===================== */
 
   .cc-section{
@@ -175,9 +53,8 @@
        "wrong" before. Swap 'Inter' for your actual brand font if the
        rest of the site uses a custom webfont. */
     font-family:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    --cc-amber-trim:#f2c98a; /* kept for reference / other uses; cards now use purple below */
-    --cc-card-accent:var(--purple);
-    --cc-card-accent-soft:var(--purple-soft);
+    --cc-amber-trim:#f2c98a; /* lighter than --amber, used only for card borders/glow */
+    --cc-amber-trim-soft:rgba(242,201,138,0.18);
   }
 
   .cc-inner{
@@ -337,32 +214,32 @@
     border-radius:inherit;
     opacity:0;
     pointer-events:none;
-    background:radial-gradient(120% 90% at 22% 0%, rgba(255,255,255,0.16), var(--cc-card-accent-soft) 55%, transparent 78%);
+    background:radial-gradient(120% 90% at 22% 0%, rgba(255,255,255,0.16), var(--cc-amber-trim-soft) 55%, transparent 78%);
     transition:opacity 0.25s ease;
   }
 
   /* HOVER — accidental touch, mouse-over, or scroll-proximity default.
-     Border only, same purple as the quote box, nothing else. */
+     Border only, lighter amber, nothing else. */
   @media (hover:hover) and (pointer:fine){
     .cc-cap-row:hover:not(.cc-cap-row--highlighted){
-      border-color:var(--cc-card-accent);
+      border-color:var(--cc-amber-trim);
     }
   }
   .cc-cap-row:active:not(.cc-cap-row--highlighted){
-    border-color:var(--cc-card-accent);
+    border-color:var(--cc-amber-trim);
   }
   .cc-cap-row--hover:not(.cc-cap-row--highlighted){
-    border-color:var(--cc-card-accent);
+    border-color:var(--cc-amber-trim);
   }
   .cc-cap-row:focus-visible{
-    outline:2px solid var(--cc-card-accent);
+    outline:2px solid var(--cc-amber-trim);
     outline-offset:2px;
   }
 
   /* HIGHLIGHTED — the selected/clicked card. Full treatment. */
   .cc-cap-row--highlighted{
-    border-color:var(--cc-card-accent);
-    box-shadow:0 0 0 1px var(--cc-card-accent), 0 0 28px var(--cc-card-accent-soft), var(--shadow-hover);
+    border-color:var(--cc-amber-trim);
+    box-shadow:0 0 0 1px var(--cc-amber-trim), 0 0 28px var(--cc-amber-trim-soft), var(--shadow-hover);
   }
   .cc-cap-row--highlighted::before{ opacity:1; }
   .cc-cap-row--highlighted .cc-cap-title{ color:#ffffff; }
@@ -685,12 +562,190 @@
     .cc-title{ font-size:44px; }
   }
 
-  @media (prefers-reduced-motion:reduce){
-    .cc-quote-body, .cc-quote-chevron, .cc-cap-row{ transition:none; }
+  /* ============ DESKTOP: Step 1 — header + quote split 50/50 ============ */
+  @media (min-width:900px){
+    .cc-inner{ max-width:1120px; }
+
+    .cc-head-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      align-items:stretch; /* makes both columns the same height, top-aligned */
+      gap:56px;
+      margin-bottom:40px;
+    }
+
+    .cc-head-col--left{
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+    }
+
+    /* two-line header on desktop instead of three:
+       "My Goal Was Never" / "to do EVERYTHING."
+       text-transform:capitalize renders the existing sentence-case
+       markup ("My goal was never") as Title Case without touching
+       the underlying text — same trick used nowhere else, kept local
+       to this rule on purpose. */
+    .cc-title{ text-align:left; }
+    .cc-title-line--hi{ text-transform:capitalize; }
+    .cc-title-line--purple,
+    .cc-title-line--green{
+      display:inline; /* sit on the same visual line, separated by the
+                          natural whitespace between the two <span>s */
+    }
+
+    .cc-subheading{ font-size:19px; max-width:46ch; }
+
+    .cc-head-col--right{ display:flex; }
+
+    .cc-quote{
+      flex:1;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      margin-bottom:0;
+    }
+    /* full text, no internal scroll, once there's room to be wide instead of tall */
+    .cc-quote-body{
+      max-height:none;
+      overflow:visible;
+      padding-right:0;
+    }
+    .cc-quote-scrollhint{ display:none; }
   }
+
+  @media (prefers-reduced-motion:reduce){
+    .cc-quote-body, .cc-cap-row{ transition:none; }
+  }
+
 </style>
+</head>
+<body>
+
+<section class="cc-section" data-theme="dark" id="capabilities">
+
+  <div class="cc-inner">
+
+    <!-- Header + Quote: single column on mobile, 50/50 split on desktop -->
+    <div class="cc-head-grid">
+
+      <div class="cc-head-col cc-head-col--left">
+        <h2 class="cc-title">
+          <span class="cc-title-line cc-title-line--hi">My goal was never</span>
+          <span class="cc-title-line cc-title-line--purple">to do</span>
+          <span class="cc-title-line cc-title-line--green">EVERYTHING.</span>
+        </h2>
+
+        <p class="cc-subheading">
+          Each of my core skills helps me understand how different functions
+          systematically contribute to improving a product.
+        </p>
+      </div>
+
+      <div class="cc-head-col cc-head-col--right">
+        <!-- Expandable boxed quote (scrolls inside the box on mobile; full text, no scroll, on desktop) -->
+        <div class="cc-quote">
+          <span class="cc-quote-mark cc-quote-mark--open" aria-hidden="true">&ldquo;</span>
+          <span class="cc-quote-mark cc-quote-mark--close" aria-hidden="true">&rdquo;</span>
+
+          <div class="cc-quote-scrollhint cc-quote-scrollhint--up" id="ccScrollUp" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 15l7-7 7 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="cc-quote-scrollhint cc-quote-scrollhint--down" id="ccScrollDown" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 9l7 7 7-7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+
+          <div class="cc-quote-body" id="ccQuoteBody">
+            <p class="cc-quote-text">
+              These aren&rsquo;t five unrelated jobs to me.
+              They&rsquo;re five angles of the same system.
+            </p>
+            <p class="cc-quote-text">
+              My work is about <span class="cc-hl cc-hl--purple">reducing the gaps</span> between
+              people, information, and the decisions that shape a product, then using what I learn to
+              <span class="cc-hl cc-hl--purple">build better communities</span>,
+              <span class="cc-hl cc-hl--purple">improve experiences</span>,
+              <span class="cc-hl cc-hl--green">create structure</span>, and
+              <span class="cc-hl cc-hl--purple">support better decisions</span>.
+            </p>
+            <p class="cc-quote-text">
+              I don&rsquo;t need to own every part of the system.
+              <span class="cc-hl cc-hl--green">I help the parts work better together.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Five capability cards + explorer share this stage -->
+    <div class="cc-stage">
+      <div class="cc-cap-list" role="list" id="ccCapList">
+        <!-- rows injected by JS -->
+      </div>
+
+      <!-- Capability Explorer (full-bleed panel, hidden until a card is clicked) -->
+      <div class="cc-explorer" id="ccExplorer" hidden>
+        <div class="cc-explorer-inner">
+
+          <div class="cc-explorer-topbar">
+            <button type="button" class="cc-explorer-back" id="ccBack">
+              <span class="cc-back-arrow" aria-hidden="true">&larr;</span> Back to Capabilities
+            </button>
+            <button type="button" class="cc-explorer-close" id="ccClose" aria-label="Close capability explorer">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+          </div>
+
+          <span class="cc-explorer-badge">CAPABILITY EXPLORER</span>
+
+          <div class="cc-explorer-head">
+            <span class="cc-explorer-number" id="ccExplorerNumber">01</span>
+            <h3 class="cc-explorer-title" id="ccExplorerTitle"></h3>
+          </div>
+          <p class="cc-explorer-line" id="ccExplorerLine"></p>
+
+          <div class="cc-explorer-divider" aria-hidden="true"></div>
+
+          <span class="cc-explorer-label">HOW I APPROACH IT</span>
+          <div class="cc-steps" id="ccSteps">
+            <!-- steps injected by JS -->
+          </div>
+
+          <div class="cc-explorer-divider" aria-hidden="true"></div>
+
+          <span class="cc-explorer-label">WHAT THIS CREATES</span>
+          <div class="cc-creates-box">
+            <span class="cc-creates-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 8l-9-5-9 5 9 5 9-5z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 8v8l9 5 9-5V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 13v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </span>
+            <p class="cc-creates-text" id="ccCreatesText"></p>
+          </div>
+
+          <span class="cc-explorer-label">EXAMPLES OF WHERE I&rsquo;VE DONE THIS</span>
+          <ul class="cc-examples-list" id="ccExamplesList">
+            <!-- examples injected by JS -->
+          </ul>
+
+        </div>
+
+        <div class="cc-explorer-footer">
+          <button type="button" class="cc-nav cc-nav--prev" id="ccPrev" aria-label="Previous capability">
+            <span aria-hidden="true">&larr;</span> Previous
+          </button>
+          <span class="cc-nav-counter" id="ccCounter">1 / 5</span>
+          <button type="button" class="cc-nav cc-nav--next" id="ccNext" aria-label="Next capability">
+            Next <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
 
 <script>
+
 (function(){
   var CC_DATA = [
     {
@@ -943,7 +998,7 @@
   quoteBody.addEventListener('scroll', updateScrollHints);
   updateScrollHints();
 })();
-</script>
 
+</script>
 </body>
 </html>
