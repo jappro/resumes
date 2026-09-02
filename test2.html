@@ -6,13 +6,16 @@
 <title>Core Capabilities — Preview</title>
 <!-- ============================================================
   CORE CAPABILITIES SECTION — standalone test build
-  Mobile: header, subheading, quote box, 5 cards, capability explorer.
-  Desktop (min-width: 1024px) — Step 1 only so far: header + quote
-  box split 40/60. Header is 3 lines, centered, in the left column,
-  top-aligned with the quote box. Quote box scrolls internally after
-  2 paragraphs (same as mobile). Cards and explorer are NOT yet
-  desktop-adapted — they'll still render using their mobile layout
-  above 1024px until we do those steps.
+  Mobile: header, subheading, quote box, 5 cards (tap to open a
+  full-bleed Explorer overlay).
+  Desktop (min-width: 1024px):
+    Step 1 — header + quote box split 40/60.
+    Step 2 — capability cards (30%) + Explorer (70%) split. The
+    Explorer is permanently visible (sticky while scrolling the card
+    list), defaults to capability 1 highlighted/shown, and crossfades
+    its content in place when you click a different card or use
+    Previous/Next. No Back/Close controls on desktop since there's
+    nothing to hide.
 ============================================================= -->
 
 <style>
@@ -624,6 +627,54 @@
       padding-right:36px;
     }
     .cc-quote-text{ font-size:clamp(15.5px, 1.05vw, 17px); }
+
+    /* ---- Step 2: capability cards (30%) + always-visible Explorer (70%) ---- */
+    .cc-stage{
+      display:grid;
+      grid-template-columns:3fr 7fr; /* 30% left / 70% right */
+      align-items:start; /* NOT stretch — the explorer needs its own natural
+                             height so position:sticky has room to work */
+      gap:clamp(28px, 3vw, 48px);
+    }
+
+    .cc-cap-list{
+      /* always visible on desktop — never fades/hides when a card is
+         clicked, since the explorer sits beside it, not on top of it */
+      margin:0;
+    }
+
+    .cc-explorer{
+      /* undo the mobile full-bleed breakout — on desktop it's just the
+         right-hand grid column, not an edge-to-edge overlay */
+      position:sticky;
+      top:24px;
+      width:auto;
+      margin-left:0;
+      margin-right:0;
+      border-top:none;
+      border-bottom:none;
+      border-radius:24px;
+      border:1px solid var(--card-border);
+      padding-bottom:24px;
+      animation:none; /* no open/close animation needed — it's always on screen */
+    }
+
+    .cc-explorer-inner{
+      max-width:none;
+      padding:28px 28px 8px;
+    }
+
+    .cc-explorer-footer{
+      position:static; /* footer just sits at the bottom of the panel;
+                           the panel itself is what's sticky, so this
+                           doesn't need its own separate sticky behavior */
+      max-width:none;
+      margin:26px 0 0;
+      padding:0 28px;
+    }
+
+    /* nothing to close/return to anymore — the panel can't hide on desktop */
+    .cc-explorer-topbar{ display:none; }
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -864,6 +915,10 @@
     });
   }
 
+  function isDesktopSplit(){
+    return window.matchMedia('(min-width:1024px)').matches;
+  }
+
   function renderExplorer(i){
     var cap = CC_DATA[i];
     numberEl.textContent = String(i + 1).padStart(2, '0');
@@ -897,12 +952,18 @@
   var FADE_MS = 260; // must roughly match the CSS transition/animation durations above
 
   function openExplorer(i){
-    // if the explorer is already open (switching capability via a card
-    // click while it's open isn't currently wired, but Prev/Next reuse
-    // this path), just re-render without re-running the list fade
+    // already open — either mid-browse via Prev/Next on mobile, or the
+    // permanently-visible desktop panel — just crossfade the content
+    // in place instead of running the full open/close sequence
     if (!explorerEl.hidden){
-      explorerIndex = i;
-      renderExplorer(i);
+      var innerEl = explorerEl.querySelector('.cc-explorer-inner');
+      innerEl.style.transition = 'opacity 0.18s ease';
+      innerEl.style.opacity = '0';
+      window.setTimeout(function(){
+        explorerIndex = i;
+        renderExplorer(i);
+        innerEl.style.opacity = '1';
+      }, 180);
       return;
     }
 
@@ -967,7 +1028,21 @@
     rows.push(row);
   });
 
-  applyStates(); // card 1 starts on hover; nothing starts highlighted
+  applyStates(); // card 1 starts on hover; nothing starts highlighted (mobile default)
+
+  // Desktop: the Explorer is permanently visible and card 1 is
+  // highlighted by default, instead of mobile's hover-only default.
+  function syncDesktopDefault(){
+    if (isDesktopSplit() && explorerEl.hidden){
+      explorerIndex = 0;
+      renderExplorer(0);
+      explorerEl.hidden = false;
+      highlightedIndex = 0;
+      applyStates();
+    }
+  }
+  syncDesktopDefault();
+  window.addEventListener('resize', syncDesktopDefault);
 
   // as the visitor scrolls, the hover affordance follows whichever card
   // sits nearest the top of the viewport — stops mattering once a card
