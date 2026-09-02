@@ -8,11 +8,11 @@
   CORE CAPABILITIES SECTION — standalone test build
   Mobile: header, subheading, quote box, 5 cards, capability explorer.
   Desktop (min-width: 1024px) — Step 1 only so far: header + quote
-  box split 40/60, content runs close to the screen edges with
-  standard side padding (not a narrow centered column), with
-  clamp()-based fluid scaling above that. Cards and explorer are NOT
-  yet desktop-adapted — they'll still render using their mobile
-  layout above 1024px until we do those steps.
+  box split 40/60. Header is 3 lines, centered, in the left column,
+  top-aligned with the quote box. Quote box scrolls internally after
+  2 paragraphs (same as mobile). Cards and explorer are NOT yet
+  desktop-adapted — they'll still render using their mobile layout
+  above 1024px until we do those steps.
 ============================================================= -->
 
 <style>
@@ -583,27 +583,27 @@
     .cc-head-col--left{
       display:flex;
       flex-direction:column;
-      justify-content:center;
+      justify-content:flex-start; /* top-aligned, not vertically centered — that's what was pushing it down below the quote box's top edge */
     }
 
-    /* two-line header on desktop instead of three:
-       "My Goal Was Never" / "to do EVERYTHING."
+    /* three-line header on desktop again (matches mobile), just centered
+       within the left column instead of left-aligned.
        text-transform:capitalize renders the existing sentence-case
-       markup ("My goal was never") as Title Case without touching
-       the underlying text — same trick used nowhere else, kept local
-       to this rule on purpose. */
+       markup ("My goal was never") as "My Goal Was Never" without
+       touching the underlying text. */
     .cc-title{
-      text-align:left;
-      font-size:clamp(38px, 3.4vw, 56px);
+      text-align:center;
+      font-size:clamp(34px, 3vw, 50px);
     }
     .cc-title-line--hi{ text-transform:capitalize; }
-    .cc-title-line--purple,
-    .cc-title-line--green{
-      display:inline; /* sit on the same visual line, separated by the
-                          natural whitespace between the two <span>s */
-    }
 
-    .cc-subheading{ font-size:clamp(17px, 1.1vw, 20px); max-width:44ch; }
+    .cc-subheading{
+      font-size:clamp(19px, 1.3vw, 23px);
+      margin-top:14px;
+      line-height:1.8;
+      text-align:left;
+      max-width:44ch;
+    }
 
     .cc-head-col--right{ display:flex; }
 
@@ -615,14 +615,15 @@
       margin-bottom:0;
       padding:clamp(22px, 2.4vw, 34px) clamp(22px, 2.6vw, 36px);
     }
-    /* full text, no internal scroll, once there's room to be wide instead of tall */
+    /* re-enabling the internal scroll on desktop too — showing all 3
+       paragraphs full-height made the box too tall next to the header.
+       Cuts off after the first 2 paragraphs, same behavior as mobile. */
     .cc-quote-body{
-      max-height:none;
-      overflow:visible;
-      padding-right:0;
+      max-height:260px;
+      overflow-y:auto;
+      padding-right:36px;
     }
     .cc-quote-text{ font-size:clamp(15.5px, 1.05vw, 17px); }
-    .cc-quote-scrollhint{ display:none; }
   }
 
   @media (prefers-reduced-motion:reduce){
