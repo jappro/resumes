@@ -11,13 +11,13 @@
   Desktop (min-width: 1024px):
     Step 1 — header + quote box split 40/60.
     Step 2 — capability cards (30%) + Explorer (70%) split. The
-    Explorer's total height is locked to match the cards column
-    (CSS grid stretch + min-height:0 trick) instead of growing to
-    fit its own longer content. Its inner content area scrolls
-    internally; the Previous/Next/counter footer stays fixed at the
-    bottom of the panel, always reachable without scrolling to the
-    end. Defaults to capability 1 highlighted/shown, crossfades its
-    content in place when you click a different card or use
+    Explorer's total height is matched to the cards column via JS
+    (ResizeObserver measures the cards column and sets an explicit
+    px height on the panel — CSS grid auto-row-sizing can't do this
+    reliably on its own). Its inner content area scrolls internally;
+    the Previous/Next/counter footer stays fixed at the bottom of
+    the panel. Defaults to capability 1 highlighted/shown, crossfades
+    its content in place when you click a different card or use
     Previous/Next. No Back/Close controls on desktop since there's
     nothing to hide.
 ============================================================= -->
@@ -636,9 +636,9 @@
     .cc-stage{
       display:grid;
       grid-template-columns:3fr 7fr; /* 30% left / 70% right */
-      align-items:stretch; /* both columns become the SAME height — the
-                               explorer's own content no longer decides
-                               the row height, see min-height:0 below */
+      align-items:start; /* cards column keeps its own natural height — see
+                             the JS below for how the explorer's height is
+                             actually matched to it */
       gap:clamp(28px, 3vw, 48px);
     }
 
@@ -660,13 +660,10 @@
       border:1px solid var(--card-border);
       animation:none; /* no open/close animation needed — it's always on screen */
 
-      /* lock total panel height to match the cards column instead of
-         growing to fit its own (often much longer) content. min-height:0
-         is the key part — without it, a grid item with overflow set
-         still forces the row to grow to fit its full content anyway. */
+      /* height is set inline via JS (matched to the cards column's
+         actual rendered height) — see syncExplorerHeight() */
       display:flex;
       flex-direction:column;
-      min-height:0;
       overflow:hidden; /* the panel itself doesn't scroll — its inner content area does, see below */
       padding-bottom:0;
     }
@@ -1063,6 +1060,25 @@
   }
   syncDesktopDefault();
   window.addEventListener('resize', syncDesktopDefault);
+
+  // Match the Explorer panel's total height to the cards column's real
+  // rendered height (CSS alone can't reliably do this in a grid with
+  // auto-sized rows — see the note above the .cc-stage rule). Runs on
+  // load, on any resize, and whenever the cards column's own size
+  // changes (e.g. text reflow at a new width).
+  function syncExplorerHeight(){
+    if (isDesktopSplit()){
+      var h = bubbleEl.getBoundingClientRect().height;
+      explorerEl.style.height = h + 'px';
+    } else {
+      explorerEl.style.height = '';
+    }
+  }
+  if (window.ResizeObserver){
+    new ResizeObserver(syncExplorerHeight).observe(bubbleEl);
+  }
+  window.addEventListener('resize', syncExplorerHeight);
+  syncExplorerHeight();
 
   // as the visitor scrolls, the hover affordance follows whichever card
   // sits nearest the top of the viewport — stops mattering once a card
