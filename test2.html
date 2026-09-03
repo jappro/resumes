@@ -9,17 +9,15 @@
   Mobile: header, subheading, quote box, 5 cards (tap to open a
   full-bleed Explorer overlay, matte black background). X close
   button: position:fixed, always floating top-right while the panel
-  is open. Floating controls (X, Previous, counter, Next) use real
-  frosted glass with an SVG-filter refraction enhancement layered on
-  top (feTurbulence + feDisplacementMap warps the backdrop, not just
-  blurs it) — degrades gracefully to plain blur() on browsers that
-  don't support an SVG filter reference inside backdrop-filter.
+  is open. Floating controls use frosted glass with an SVG-filter
+  refraction enhancement (degrades gracefully without it).
+  "What this creates" box now has proper margin-bottom (was 0,
+  causing it to collide with "EXAMPLES OF WHERE I'VE DONE THIS").
   Desktop (min-width: 1024px):
     Step 1 — header + quote box split 40/60.
     Step 2 — capability cards (30%) + Explorer (70%) split, height
     matched to the cards column via JS, inner content scrolls,
-    Previous/Next/counter footer fixed at the bottom. No Back/Close
-    controls on desktop since there's nothing to hide.
+    Previous/Next/counter footer fixed at the bottom.
 ============================================================= -->
 
 <style>
@@ -470,7 +468,7 @@
     border-radius:18px;
     background:rgba(255,255,255,0.06);
     border:1px solid rgba(255,255,255,0.14);
-    margin-bottom:0;
+    margin-bottom:26px;
   }
   .cc-creates-icon{
     flex-shrink:0;
