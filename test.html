@@ -244,12 +244,14 @@
 
   <span class="phil-card__badge">01</span>
 
+  <div class="phil-card__text">
   <h3 class="phil-card__heading">Community is how a product listens.</h3>
 
   <div class="phil-card__body">
     <p>Community is more than a group of people on a platform.</p>
     <p>Users, customers, testers, social media followers, contributors, Telegram and Discord members, and even people quietly observing a product are all part of the wider community around it.</p>
     <p>Their conversations, behavior, complaints, questions, and experiences can teach the product something.</p>
+  </div>
   </div>
 
   <div class="phil-card__diagram" aria-hidden="true">
@@ -335,12 +337,14 @@
 
   <span class="phil-card__badge">02</span>
 
+  <div class="phil-card__text">
   <h3 class="phil-card__heading">Feedback has a language. Learn to read it.</h3>
 
   <div class="phil-card__body">
     <p>Collecting information is one thing.<br>Understanding what it is actually telling you is another.</p>
     <p>A product is already receiving feedback long before someone fills out a survey.<br>It appears in complaints, repeated questions, daily conversations, changing behavior, silence, suggestions, and the way people experience a product.</p>
     <p>That information needs to be understood and interpreted into something that can advance the product.</p>
+  </div>
   </div>
 
   <div class="phil-card__diagram phil-card__diagram--icon" aria-hidden="true">
@@ -469,6 +473,7 @@
 
   <span class="phil-card__badge">04</span>
 
+  <div class="phil-card__text">
   <h3 class="phil-card__heading">The problem matters more than the box.</h3>
 
   <div class="phil-card__body">
@@ -477,6 +482,7 @@
     <p>The question is <span class="phil-hit">&ldquo;who&mdash;or where&mdash;can help solve it.&rdquo;</span></p>
     <p>The important thing is not keeping a problem inside the function where it was discovered.</p>
     <p>It is helping the right information reach the right place.</p>
+  </div>
   </div>
 
   <div class="phil-card__diagram phil-card__diagram--icon" aria-hidden="true">
@@ -522,6 +528,7 @@
 
   <span class="phil-card__badge">05</span>
 
+  <div class="phil-card__text">
   <h3 class="phil-card__heading">Data reveals patterns. Systems make improvement repeatable.</h3>
 
   <div class="phil-card__body">
@@ -529,6 +536,7 @@
     <p>A pattern across hundreds or thousands of interactions can reveal something bigger.</p>
     <p>Data helps document and make those patterns visible.<br>Systems and operations help ensure that useful improvements don&rsquo;t depend entirely on individual memory or effort.</p>
     <p>One helps us see what is happening. The other helps us keep improving it.</p>
+  </div>
   </div>
 
   <div class="phil-card__diagram" aria-hidden="true">
@@ -994,6 +1002,82 @@
     .phil-body-cards .phil-card[data-card-index="3"]{ grid-area:card3; z-index:auto; }
     .phil-body-cards .phil-card[data-card-index="4"]{ grid-area:card4; z-index:auto; }
     .phil-body-cards .phil-card[data-card-index="5"]{ grid-area:card5; z-index:auto; }
+
+    /* ---------- cards 01 / 02 / 04 / 05: landscape, not portrait ----------
+       text column + diagram column, side by side. Simple single-icon
+       diagrams (02, 04) stay narrow (85/15); the composite diagrams
+       (01, 05) get more room (74/26) since they have more to show —
+       text still keeps a comfortably readable width either way.
+       A small watermark numeral sits low in the corner, out of the
+       heading's way, so heading/body can start flush top-left.
+       Card 03 keeps its own full-row layout. */
+    .phil-body-cards .phil-card[data-card-index="1"],
+    .phil-body-cards .phil-card[data-card-index="2"],
+    .phil-body-cards .phil-card[data-card-index="4"],
+    .phil-body-cards .phil-card[data-card-index="5"]{
+      position:relative;
+      display:flex;
+      flex-direction:row;
+      align-items:center;
+      gap:28px;
+      overflow:hidden;
+    }
+
+    .phil-body-cards .phil-card[data-card-index="2"] > .phil-card__text,
+    .phil-body-cards .phil-card[data-card-index="4"] > .phil-card__text{
+      position:relative;
+      z-index:1;
+      flex:0 0 calc(85% - 14px);
+      max-width:calc(85% - 14px);
+    }
+    .phil-body-cards .phil-card[data-card-index="2"] > .phil-card__diagram,
+    .phil-body-cards .phil-card[data-card-index="4"] > .phil-card__diagram{
+      position:relative;
+      z-index:1;
+      flex:0 0 calc(15% - 14px);
+      max-width:calc(15% - 14px);
+      margin:0;
+    }
+
+    .phil-body-cards .phil-card[data-card-index="1"] > .phil-card__text,
+    .phil-body-cards .phil-card[data-card-index="5"] > .phil-card__text{
+      position:relative;
+      z-index:1;
+      flex:0 0 calc(74% - 14px);
+      max-width:calc(74% - 14px);
+    }
+    .phil-body-cards .phil-card[data-card-index="1"] > .phil-card__diagram,
+    .phil-body-cards .phil-card[data-card-index="5"] > .phil-card__diagram{
+      position:relative;
+      z-index:1;
+      flex:0 0 calc(26% - 14px);
+      max-width:calc(26% - 14px);
+      margin:0;
+    }
+
+    /* watermark numeral: small, sits low in the corner — heading and
+       body text start flush top-left, undisturbed */
+    .phil-body-cards .phil-card[data-card-index="1"] > .phil-card__badge,
+    .phil-body-cards .phil-card[data-card-index="2"] > .phil-card__badge,
+    .phil-body-cards .phil-card[data-card-index="4"] > .phil-card__badge,
+    .phil-body-cards .phil-card[data-card-index="5"] > .phil-card__badge{
+      position:absolute;
+      bottom:-10px;
+      left:8px;
+      top:auto;
+      z-index:0;
+      display:block;
+      min-width:0;
+      height:auto;
+      border:none;
+      padding:0;
+      font-size:64px;
+      font-weight:800;
+      line-height:1;
+      color:rgba(255,255,255,0.06);
+      pointer-events:none;
+      user-select:none;
+    }
 
     /* card 03: one connected row instead of a 2x2 bento grid */
     .phil-concepts{
