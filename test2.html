@@ -6,16 +6,9 @@
 <title>Core Capabilities — Preview</title>
 <!-- ============================================================
   CORE CAPABILITIES SECTION — standalone test build
-  Explorer panel structure per capability: number+title, MY VIEW
-  (philosophy paragraphs), HOW I APPROACH IT (5-step timeline), WHAT
-  THIS CREATES (callout box), EXAMPLES OF WHERE I'VE USED THIS
-  (title+description pairs), WHEN THE PLAN MEETS REALITY (closing
-  paragraphs + short list + emphasized closing line).
-  Card 1 (Community Development) has real content filled in; cards
-  2–5 are placeholder-scaffolded in the same shape.
-  Responsive: mobile (<768px) full-bleed overlay, tablet (768–1023px)
-  centered rounded panel + 2-col cards, desktop (1024px+) persistent
-  30/70 split with JS-matched height.
+  Card 3's WHEN THE PLAN MEETS REALITY loop diagram label changed
+  from "Cycles back to Repeated Issue" to "Repeat the process".
+  Cards 1–3 have real content; 4–5 still placeholder-scaffolded.
 ============================================================= -->
 
 <style>
@@ -451,16 +444,26 @@
     line-height:1.55;
   }
 
-  /* "what this creates" callout */
+  /* "what this creates" callout — frosted glass, matching the
+     floating buttons' treatment: a safe blur() fallback first, then
+     the SVG-distortion enhancement layered on top. Browsers that
+     can't parse the url() reference simply drop that declaration and
+     keep the fallback — nothing breaks either way. */
   .cc-creates-box{
     display:flex;
     align-items:flex-start;
     gap:14px;
     padding:18px;
     border-radius:18px;
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.14);
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.16);
+    backdrop-filter:blur(14px) saturate(150%); /* safe fallback */
+    -webkit-backdrop-filter:blur(14px) saturate(150%);
+    box-shadow:0 10px 26px rgba(0,0,0,0.28), inset 0 1px 0 rgba(255,255,255,0.14);
     margin-bottom:26px;
+  }
+  .cc-creates-box{
+    backdrop-filter:url(#cc-glass-distort-lg) blur(10px) saturate(150%); /* enhancement — see filter comment above */
   }
   .cc-creates-icon{
     flex-shrink:0;
@@ -475,12 +478,131 @@
   }
   .cc-creates-icon svg{ width:20px; height:20px; }
   .cc-creates-text{
-    margin:0;
     color:#e9e4ff;
     font-size:14.5px;
     line-height:1.65;
   }
+  .cc-creates-text p{ margin:0 0 10px; }
+  .cc-creates-text p:last-child{ margin-bottom:0; }
   .cc-creates-text strong{ color:#ffffff; font-weight:700; }
+
+  /* ---- step circles that use a plain number instead of an icon
+     (used when a capability's steps don't need distinct icon glyphs) ---- */
+  .cc-step-num{
+    color:#6d4fd6;
+    font-size:16px;
+    font-weight:800;
+  }
+
+  /* ---- MY VIEW optional relationship diagram (e.g. the Visibility /
+     Audience / Brand Identity triad) — thin connecting lines + plain
+     typography, deliberately not an icon-style illustration ---- */
+  .cc-triad{
+    position:relative;
+    width:100%;
+    height:220px;
+    margin:22px 0 6px;
+  }
+  .cc-triad-svg{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+  }
+  .cc-triad-svg line{
+    stroke:rgba(255,255,255,0.22);
+    stroke-width:1.2;
+  }
+  .cc-triad-node{
+    position:absolute;
+    text-align:center;
+    width:150px;
+  }
+  .cc-triad-node--top{ top:0; left:50%; transform:translateX(-50%); }
+  .cc-triad-node--left{ bottom:0; left:0; }
+  .cc-triad-node--right{ bottom:0; right:0; }
+  .cc-triad-label{
+    display:block;
+    color:#ffffff;
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:0.06em;
+    margin-bottom:4px;
+  }
+  .cc-triad-sub{
+    display:block;
+    color:#b6adde;
+    font-size:12.5px;
+    line-height:1.4;
+  }
+
+  /* ---- reusable vertical "flow" diagram: a sequence of plain-text
+     steps connected by a thin line, with optional branch-off (e.g. an
+     alternate/negative outcome) and an optional loop indicator at the
+     end. Typography-led by design — no icons except the loop symbol,
+     which earns its place since a cycle is hard to convey in text alone. ---- */
+  .cc-flow{
+    display:flex;
+    flex-direction:column;
+    margin:22px 0 4px;
+  }
+  .cc-flow-step{
+    position:relative;
+    padding:0 0 24px 20px;
+  }
+  .cc-flow-step:last-child{ padding-bottom:0; }
+  .cc-flow-step::before{
+    content:'';
+    position:absolute;
+    left:0;
+    top:5px;
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:var(--purple);
+  }
+  .cc-flow-step:not(:last-child)::after{
+    content:'';
+    position:absolute;
+    left:3px;
+    top:16px;
+    bottom:0;
+    width:1.2px;
+    background:rgba(255,255,255,0.2);
+  }
+  .cc-flow-label{
+    display:block;
+    color:#ffffff;
+    font-size:13px;
+    font-weight:800;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+  }
+  .cc-flow-branch{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    margin:10px 0 0;
+    padding:7px 12px;
+    border-left:1.5px solid rgba(230,162,77,0.45);
+    background:rgba(230,162,77,0.06);
+    color:#e6a24d;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    border-radius:0 8px 8px 0;
+  }
+  .cc-flow-loop{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding-left:20px;
+    color:#8b8b93;
+    font-size:12px;
+    font-weight:600;
+  }
+  .cc-flow-loop svg{ width:14px; height:14px; flex-shrink:0; }
 
   /* examples list */
   /* ---- MY VIEW section ---- */
@@ -863,6 +985,19 @@
         <feGaussianBlur in="cc-noise" stdDeviation="1.6" result="cc-noise-soft"/>
         <feDisplacementMap in="SourceGraphic" in2="cc-noise-soft" scale="14" xChannelSelector="R" yChannelSelector="G"/>
       </filter>
+      <!-- Same technique, tuned for a much larger surface (the "What
+           this creates" callout card). baseFrequency is a spatial
+           frequency — reusing the button's value unchanged on a
+           surface several times bigger would pack in far more ripples
+           and look noisy rather than glass-like, so this uses a lower
+           frequency (longer wavelength) and a gentler displacement
+           scale to keep it a calm, subtle warp instead of visual noise
+           behind readable paragraph text. -->
+      <filter id="cc-glass-distort-lg" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.006 0.008" numOctaves="2" seed="11" result="cc-noise-lg"/>
+        <feGaussianBlur in="cc-noise-lg" stdDeviation="2.2" result="cc-noise-lg-soft"/>
+        <feDisplacementMap in="SourceGraphic" in2="cc-noise-lg-soft" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
     </defs>
   </svg>
 
@@ -974,7 +1109,7 @@
             <span class="cc-creates-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 8l-9-5-9 5 9 5 9-5z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M3 8v8l9 5 9-5V8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 13v8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
             </span>
-            <p class="cc-creates-text" id="ccCreatesText"></p>
+            <div class="cc-creates-text" id="ccCreatesText"></div>
           </div>
 
           <span class="cc-explorer-label" id="ccExamplesLabel">EXAMPLES OF WHERE I&rsquo;VE USED THIS</span>
@@ -1025,7 +1160,7 @@
         { title: "Read the Signals", desc: "Identify patterns, feedback, and what the community is really telling us.", icon: "chart" },
         { title: "Feed It Back", desc: "Use insights to improve the product and the community experience.", icon: "refresh" }
       ],
-      creates: "Communities that don\u2019t just grow in numbers, but continuously provide <strong>meaningful signals</strong> that help shape <strong>better products and experiences</strong>.",
+      creates: ["Communities that don\u2019t just grow in numbers, but continuously provide <strong>meaningful signals</strong> that help shape <strong>better products and experiences</strong>."],
       examples: [
         { title: "Web3 Communities", sub: "Discord & Telegram" },
         { title: "Gaming Communities", sub: "Community engagement & support" },
@@ -1033,12 +1168,12 @@
         { title: "Social Communities", sub: "Audience conversations, feedback & interaction" }
       ],
       reality: {
-        paragraphs: [
-          "A community built from a rigid template is liable to break.",
-          "I don\u2019t copy a playbook just because it worked somewhere else. I find what works for that specific community.",
-          "If something breaks, I go back to the signals."
+        blocks: [
+          { type: "p", text: "A community built from a rigid template is liable to break." },
+          { type: "p", text: "I don\u2019t copy a playbook just because it worked somewhere else. I find what works for that specific community." },
+          { type: "p", text: "If something breaks, I go back to the signals." },
+          { type: "list", items: ["Reinforce what is working.", "Understand what isn\u2019t.", "Iterate."] }
         ],
-        list: ["Reinforce what is working.", "Understand what isn\u2019t.", "Iterate."],
         closing: "That is my approach!"
       }
     },
@@ -1046,54 +1181,111 @@
       title: "Social Media Management & Brand Growth",
       line: "Content should do more than fill a calendar.",
       myView: [
-        "PLACEHOLDER \u2014 replace with your real \u201cmy view\u201d copy for this capability.",
-        "PLACEHOLDER \u2014 second paragraph.",
-        "PLACEHOLDER \u2014 third paragraph."
+        "Content should do more than fill a calendar.",
+        "Visibility without identity can attract attention without building an audience.",
+        "Identity without visibility can have something meaningful to say, but too few people get to hear it.",
+        "My approach is to build visibility and audience without losing what makes the brand recognizable."
       ],
+      myViewDiagram:
+        '<div class="cc-triad">' +
+          '<svg class="cc-triad-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">' +
+            '<line x1="50" y1="14" x2="15" y2="86"/>' +
+            '<line x1="50" y1="14" x2="85" y2="86"/>' +
+            '<line x1="15" y1="86" x2="85" y2="86"/>' +
+          '</svg>' +
+          '<div class="cc-triad-node cc-triad-node--top">' +
+            '<span class="cc-triad-label">VISIBILITY</span>' +
+            '<span class="cc-triad-sub">People see you</span>' +
+          '</div>' +
+          '<div class="cc-triad-node cc-triad-node--left">' +
+            '<span class="cc-triad-label">AUDIENCE</span>' +
+            '<span class="cc-triad-sub">People choose to stay</span>' +
+          '</div>' +
+          '<div class="cc-triad-node cc-triad-node--right">' +
+            '<span class="cc-triad-label">BRAND IDENTITY</span>' +
+            '<span class="cc-triad-sub">People understand who you are</span>' +
+          '</div>' +
+        '</div>',
       steps: [
-        { title: "PLACEHOLDER step 1", desc: "Replace with your real approach copy.", icon: "users" },
-        { title: "PLACEHOLDER step 2", desc: "Replace with your real approach copy.", icon: "search" },
-        { title: "PLACEHOLDER step 3", desc: "Replace with your real approach copy.", icon: "usersPlus" },
-        { title: "PLACEHOLDER step 4", desc: "Replace with your real approach copy.", icon: "chart" },
-        { title: "PLACEHOLDER step 5", desc: "Replace with your real approach copy.", icon: "refresh" }
+        { title: "Understand the Brand", desc: "Understand what the brand is building, what it stands for, and how it should communicate.", icon: "number" },
+        { title: "Understand the Audience", desc: "Look at who we are speaking to, what they care about, and what they respond to.", icon: "number" },
+        { title: "Find the Message", desc: "Turn what the brand is building into messages people can understand and connect with.", icon: "number" },
+        { title: "Create & Distribute", desc: "Create purposeful content and get it in front of people through the right formats, channels, and timing.", icon: "number" },
+        { title: "Learn & Improve", desc: "Observe what people respond to, identify what is working, and use that to improve the next cycle.", icon: "number" }
       ],
-      creates: "PLACEHOLDER \u2014 replace with your real \u201cwhat this creates\u201d copy.",
+      creates: [
+        "A social presence that works toward more than activity.",
+        "Content becomes a way to build visibility, strengthen brand identity, understand the audience, and gradually turn attention into a relationship."
+      ],
       examples: [
-        { title: "PLACEHOLDER example 1", sub: "Replace with a short description" },
-        { title: "PLACEHOLDER example 2", sub: "Replace with a short description" },
-        { title: "PLACEHOLDER example 3", sub: "Replace with a short description" }
+        { title: "Web3 Projects", sub: "Social media, community communication & growth" },
+        { title: "Gaming Communities", sub: "Content, announcements & audience engagement" },
+        { title: "Technology & Business", sub: "Brand communication & content planning" },
+        { title: "Personal Brand", sub: "X & LinkedIn content, audience learning & experimentation" }
       ],
       reality: {
-        paragraphs: ["PLACEHOLDER \u2014 replace with your real closing copy for this capability."],
-        list: ["PLACEHOLDER point 1", "PLACEHOLDER point 2", "PLACEHOLDER point 3"],
-        closing: "PLACEHOLDER closing line."
+        blocks: [
+          { type: "p", text: "Social media is unpredictable. Visibility can change overnight." },
+          { type: "p", text: "A strategy that reached thousands yesterday can reach a fraction of that tomorrow." },
+          { type: "p", text: "When that happens, I don\u2019t abandon the brand identity just to chase numbers." },
+          { type: "p", text: "I explore different ways to regain visibility, observe what the audience is responding to, pay attention to relevant trends, and iterate." }
+        ],
+        closing: "Get what we don\u2019t have yet without losing what we already have."
       }
     },
     {
       title: "Customer Experience",
       line: "The experience after attention matters just as much as getting attention.",
       myView: [
-        "PLACEHOLDER \u2014 replace with your real \u201cmy view\u201d copy for this capability.",
-        "PLACEHOLDER \u2014 second paragraph.",
-        "PLACEHOLDER \u2014 third paragraph."
+        "The experience after attention matters just as much as getting attention.",
+        "Getting someone to choose a product is one thing. What happens after they arrive can determine whether they understand it, trust it, return, or decide to leave.",
+        "The job is not just to resolve the customer\u2019s problem. It is to understand why the problem keeps reaching the customer."
       ],
+      myViewDiagram:
+        '<div class="cc-flow">' +
+          '<div class="cc-flow-step"><span class="cc-flow-label">Attention</span></div>' +
+          '<div class="cc-flow-step"><span class="cc-flow-label">Arrival</span></div>' +
+          '<div class="cc-flow-step">' +
+            '<span class="cc-flow-label">Experience</span>' +
+            '<div class="cc-flow-branch">Friction &rarr; Leave</div>' +
+          '</div>' +
+          '<div class="cc-flow-step"><span class="cc-flow-label">Return</span></div>' +
+        '</div>',
       steps: [
-        { title: "PLACEHOLDER step 1", desc: "Replace with your real approach copy.", icon: "users" },
-        { title: "PLACEHOLDER step 2", desc: "Replace with your real approach copy.", icon: "search" },
-        { title: "PLACEHOLDER step 3", desc: "Replace with your real approach copy.", icon: "usersPlus" },
-        { title: "PLACEHOLDER step 4", desc: "Replace with your real approach copy.", icon: "chart" },
-        { title: "PLACEHOLDER step 5", desc: "Replace with your real approach copy.", icon: "refresh" }
+        { title: "Understand the Journey", desc: "Look at what the customer is trying to do and the steps they take to get there.", icon: "number" },
+        { title: "Listen to the Experience", desc: "Pay attention to questions, complaints, frustrations, and moments where people struggle.", icon: "number" },
+        { title: "Find the Friction", desc: "Identify where time, clarity, trust, or effort is being unnecessarily lost.", icon: "number" },
+        { title: "Resolve & Connect", desc: "Help resolve the immediate problem and ensure useful feedback doesn\u2019t stop at the interaction.", icon: "number" },
+        { title: "Improve the Experience", desc: "Use recurring feedback and patterns to improve the process, communication, or product behind the experience.", icon: "number" }
       ],
-      creates: "PLACEHOLDER \u2014 replace with your real \u201cwhat this creates\u201d copy.",
+      creates: [
+        "An experience that doesn\u2019t only react when something goes wrong.",
+        "It learns from the people experiencing the product and uses what they reveal to make the next experience better."
+      ],
       examples: [
-        { title: "PLACEHOLDER example 1", sub: "Replace with a short description" },
-        { title: "PLACEHOLDER example 2", sub: "Replace with a short description" },
-        { title: "PLACEHOLDER example 3", sub: "Replace with a short description" }
+        { title: "Community Support", sub: "Questions, complaints, guidance & issue resolution" },
+        { title: "Web3 Communities", sub: "Member support, feedback & experience monitoring" },
+        { title: "Social Communities", sub: "Audience conversations, concerns & relationship management" },
+        { title: "Operational Environments", sub: "Recurring issues, information flow & process improvement" }
       ],
       reality: {
-        paragraphs: ["PLACEHOLDER \u2014 replace with your real closing copy for this capability."],
-        list: ["PLACEHOLDER point 1", "PLACEHOLDER point 2", "PLACEHOLDER point 3"],
-        closing: "PLACEHOLDER closing line."
+        blocks: [
+          { type: "p", text: "Solving the same problem repeatedly is a signal. Sometimes the customer isn\u2019t the problem." },
+          { type: "list", items: ["The process may be unclear.", "The information may be missing.", "Or the system behind the experience may need attention."] },
+          { type: "p", text: "When resolving an issue isn\u2019t improving the experience, I go back to the journey." },
+          { type: "list", items: ["Where is the friction?", "What keeps repeating?", "What is missing?"] }
+        ],
+        closing: "Then use what I find to improve the experience beyond that single interaction.",
+        diagram:
+          '<div class="cc-flow" style="margin-top:18px;">' +
+            '<div class="cc-flow-step"><span class="cc-flow-label">Repeated Issue</span></div>' +
+            '<div class="cc-flow-step"><span class="cc-flow-label">Find the Pattern</span></div>' +
+            '<div class="cc-flow-step"><span class="cc-flow-label">Improve the System</span></div>' +
+          '</div>' +
+          '<div class="cc-flow-loop">' +
+            '<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12a9 9 0 1 1-2.64-6.36" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M21 3v6h-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+            'Repeat the process' +
+          '</div>'
       }
     },
     {
@@ -1111,15 +1303,17 @@
         { title: "PLACEHOLDER step 4", desc: "Replace with your real approach copy.", icon: "chart" },
         { title: "PLACEHOLDER step 5", desc: "Replace with your real approach copy.", icon: "refresh" }
       ],
-      creates: "PLACEHOLDER \u2014 replace with your real \u201cwhat this creates\u201d copy.",
+      creates: ["PLACEHOLDER \u2014 replace with your real \u201cwhat this creates\u201d copy."],
       examples: [
         { title: "PLACEHOLDER example 1", sub: "Replace with a short description" },
         { title: "PLACEHOLDER example 2", sub: "Replace with a short description" },
         { title: "PLACEHOLDER example 3", sub: "Replace with a short description" }
       ],
       reality: {
-        paragraphs: ["PLACEHOLDER \u2014 replace with your real closing copy for this capability."],
-        list: ["PLACEHOLDER point 1", "PLACEHOLDER point 2", "PLACEHOLDER point 3"],
+        blocks: [
+          { type: "p", text: "PLACEHOLDER \u2014 replace with your real closing copy for this capability." },
+          { type: "list", items: ["PLACEHOLDER point 1", "PLACEHOLDER point 2", "PLACEHOLDER point 3"] }
+        ],
         closing: "PLACEHOLDER closing line."
       }
     },
@@ -1138,15 +1332,17 @@
         { title: "PLACEHOLDER step 4", desc: "Replace with your real approach copy.", icon: "chart" },
         { title: "PLACEHOLDER step 5", desc: "Replace with your real approach copy.", icon: "refresh" }
       ],
-      creates: "PLACEHOLDER \u2014 replace with your real \u201cwhat this creates\u201d copy.",
+      creates: ["PLACEHOLDER \u2014 replace with your real \u201cwhat this creates\u201d copy."],
       examples: [
         { title: "PLACEHOLDER example 1", sub: "Replace with a short description" },
         { title: "PLACEHOLDER example 2", sub: "Replace with a short description" },
         { title: "PLACEHOLDER example 3", sub: "Replace with a short description" }
       ],
       reality: {
-        paragraphs: ["PLACEHOLDER \u2014 replace with your real closing copy for this capability."],
-        list: ["PLACEHOLDER point 1", "PLACEHOLDER point 2", "PLACEHOLDER point 3"],
+        blocks: [
+          { type: "p", text: "PLACEHOLDER \u2014 replace with your real closing copy for this capability." },
+          { type: "list", items: ["PLACEHOLDER point 1", "PLACEHOLDER point 2", "PLACEHOLDER point 3"] }
+        ],
         closing: "PLACEHOLDER closing line."
       }
     }
@@ -1200,11 +1396,16 @@
     titleEl.textContent = cap.title;
     counterEl.textContent = (i + 1) + ' / ' + CC_DATA.length;
 
-    myViewEl.innerHTML = cap.myView.map(function(p){ return '<p>' + p + '</p>'; }).join('');
+    myViewEl.innerHTML =
+      cap.myView.map(function(p){ return '<p>' + p + '</p>'; }).join('') +
+      (cap.myViewDiagram || ''); // optional relationship diagram, e.g. card 2's Visibility/Audience/Brand Identity triad
 
-    stepsEl.innerHTML = cap.steps.map(function(step){
+    stepsEl.innerHTML = cap.steps.map(function(step, idx){
+      var iconMarkup = (step.icon === 'number' || !step.icon)
+        ? '<span class="cc-step-num">' + String(idx + 1).padStart(2, '0') + '</span>'
+        : (CC_ICONS[step.icon] || CC_ICONS.users);
       return '<div class="cc-step">' +
-        '<span class="cc-step-icon">' + (CC_ICONS[step.icon] || CC_ICONS.users) + '</span>' +
+        '<span class="cc-step-icon">' + iconMarkup + '</span>' +
         '<div class="cc-step-body">' +
           '<p class="cc-step-title">' + step.title + '</p>' +
           '<p class="cc-step-desc">' + step.desc + '</p>' +
@@ -1212,16 +1413,21 @@
       '</div>';
     }).join('');
 
-    createsEl.innerHTML = cap.creates;
+    createsEl.innerHTML = cap.creates.map(function(p){ return '<p>' + p + '</p>'; }).join('');
 
     examplesEl.innerHTML = cap.examples.map(function(ex){
       return '<li><span class="cc-example-title">' + ex.title + '</span><span class="cc-example-sub">' + ex.sub + '</span></li>';
     }).join('');
 
     realityEl.innerHTML =
-      cap.reality.paragraphs.map(function(p){ return '<p>' + p + '</p>'; }).join('') +
-      '<ul class="cc-reality-list">' + cap.reality.list.map(function(li){ return '<li>' + li + '</li>'; }).join('') + '</ul>' +
-      '<p class="cc-reality-closing">' + cap.reality.closing + '</p>';
+      (cap.reality.blocks || []).map(function(b){
+        if (b.type === 'list'){
+          return '<ul class="cc-reality-list">' + b.items.map(function(li){ return '<li>' + li + '</li>'; }).join('') + '</ul>';
+        }
+        return '<p>' + b.text + '</p>';
+      }).join('') +
+      (cap.reality.closing ? '<p class="cc-reality-closing">' + cap.reality.closing + '</p>' : '') +
+      (cap.reality.diagram || '');
   }
 
   function selectCard(index){
