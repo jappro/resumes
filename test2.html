@@ -6,17 +6,16 @@
 <title>Core Capabilities — Preview</title>
 <!-- ============================================================
   CORE CAPABILITIES SECTION — standalone test build
-  Mobile (<768px): header, subheading, quote box, 5 cards (tap to
-  open a full-bleed Explorer overlay, matte black background).
-  Tablet (768px–1023px): same click-to-open interaction model as
-  mobile, bigger type, 2 cards per row, Explorer as a rounded panel
-  matching the same edges as the rest of the content (was wrongly
-  capped at 680px causing dead space, now edge-to-edge like .cc-inner).
-  Desktop (min-width: 1024px):
-    Step 1 — header + quote box split 40/60.
-    Step 2 — capability cards (30%) + Explorer (70%) split, height
-    matched to the cards column via JS, inner content scrolls,
-    Previous/Next/counter footer fixed at the bottom.
+  Explorer panel structure per capability: number+title, MY VIEW
+  (philosophy paragraphs), HOW I APPROACH IT (5-step timeline), WHAT
+  THIS CREATES (callout box), EXAMPLES OF WHERE I'VE USED THIS
+  (title+description pairs), WHEN THE PLAN MEETS REALITY (closing
+  paragraphs + short list + emphasized closing line).
+  Card 1 (Community Development) has real content filled in; cards
+  2–5 are placeholder-scaffolded in the same shape.
+  Responsive: mobile (<768px) full-bleed overlay, tablet (768–1023px)
+  centered rounded panel + 2-col cards, desktop (1024px+) persistent
+  30/70 split with JS-matched height.
 ============================================================= -->
 
 <style>
@@ -388,12 +387,6 @@
     font-weight:800;
     line-height:1.2;
   }
-  .cc-explorer-line{
-    margin:0 0 20px;
-    color:#d9d1ff;
-    font-size:15px;
-    line-height:1.65;
-  }
 
   .cc-explorer-divider{
     height:1px;
@@ -490,30 +483,92 @@
   .cc-creates-text strong{ color:#ffffff; font-weight:700; }
 
   /* examples list */
+  /* ---- MY VIEW section ---- */
+  .cc-explorer-myview p{
+    margin:0 0 14px;
+    color:#e9e4ff;
+    font-size:15.5px;
+    line-height:1.7;
+  }
+  .cc-explorer-myview p:last-child{ margin-bottom:0; }
+
+  /* ---- examples list: now a title + description pair per item ---- */
   .cc-examples-list{
     list-style:none;
     margin:0;
     padding:0;
     display:flex;
     flex-direction:column;
-    gap:10px;
+    gap:16px;
   }
   .cc-examples-list li{
     position:relative;
     padding-left:18px;
-    color:#e9e4ff;
-    font-size:14.5px;
-    line-height:1.5;
+    display:flex;
+    flex-direction:column;
+    gap:3px;
   }
   .cc-examples-list li::before{
     content:'';
     position:absolute;
     left:0;
-    top:8px;
+    top:7px;
     width:6px;
     height:6px;
     border-radius:50%;
     background:var(--purple);
+  }
+  .cc-example-title{
+    color:#ffffff;
+    font-size:15px;
+    font-weight:600;
+    line-height:1.4;
+  }
+  .cc-example-sub{
+    color:#b6adde;
+    font-size:14px;
+    line-height:1.5;
+  }
+
+  /* ---- WHEN THE PLAN MEETS REALITY (closing section) ---- */
+  .cc-explorer-reality p{
+    margin:0 0 14px;
+    color:#e9e4ff;
+    font-size:15.5px;
+    line-height:1.7;
+  }
+  .cc-reality-list{
+    list-style:none;
+    margin:4px 0 18px;
+    padding:0;
+    display:flex;
+    flex-direction:column;
+    gap:7px;
+  }
+  .cc-reality-list li{
+    position:relative;
+    padding-left:16px;
+    color:#f3f0ff;
+    font-weight:600;
+    font-size:15px;
+    line-height:1.5;
+  }
+  .cc-reality-list li::before{
+    content:'';
+    position:absolute;
+    left:0;
+    top:8px;
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:var(--purple);
+  }
+  .cc-reality-closing{
+    margin:4px 0 0;
+    color:var(--purple);
+    font-weight:700;
+    font-size:16px;
+    font-style:italic;
   }
 
   /* sticky floating footer inside the explorer */
@@ -648,7 +703,7 @@
     .cc-explorer-inner{ max-width:none; padding:32px 32px 12px; }
     .cc-explorer-number{ width:48px; height:48px; font-size:17px; }
     .cc-explorer-title{ font-size:30px; }
-    .cc-explorer-line{ font-size:16px; }
+    .cc-explorer-myview p{ font-size:16px; }
     .cc-explorer-label{ font-size:12.5px; }
     .cc-step-icon{ width:52px; height:52px; }
     .cc-step-icon svg{ width:24px; height:24px; }
@@ -656,7 +711,8 @@
     .cc-step-desc{ font-size:14.5px; }
     .cc-creates-box{ padding:20px; }
     .cc-creates-text{ font-size:15.5px; }
-    .cc-examples-list li{ font-size:15.5px; }
+    .cc-example-title{ font-size:16px; }
+    .cc-example-sub{ font-size:14.5px; }
 
     .cc-explorer-footer{ max-width:none; padding:0 32px; }
   }
@@ -896,7 +952,13 @@
             <span class="cc-explorer-number" id="ccExplorerNumber">01</span>
             <h3 class="cc-explorer-title" id="ccExplorerTitle"></h3>
           </div>
-          <p class="cc-explorer-line" id="ccExplorerLine"></p>
+
+          <div class="cc-explorer-divider" aria-hidden="true"></div>
+
+          <span class="cc-explorer-label">MY VIEW</span>
+          <div class="cc-explorer-myview" id="ccMyView">
+            <!-- paragraphs injected by JS -->
+          </div>
 
           <div class="cc-explorer-divider" aria-hidden="true"></div>
 
@@ -915,10 +977,17 @@
             <p class="cc-creates-text" id="ccCreatesText"></p>
           </div>
 
-          <span class="cc-explorer-label">EXAMPLES OF WHERE I&rsquo;VE DONE THIS</span>
+          <span class="cc-explorer-label" id="ccExamplesLabel">EXAMPLES OF WHERE I&rsquo;VE USED THIS</span>
           <ul class="cc-examples-list" id="ccExamplesList">
             <!-- examples injected by JS -->
           </ul>
+
+          <div class="cc-explorer-divider" aria-hidden="true"></div>
+
+          <span class="cc-explorer-label" id="ccRealityLabel">WHEN THE PLAN MEETS REALITY</span>
+          <div class="cc-explorer-reality" id="ccReality">
+            <!-- paragraphs + list + closing line injected by JS -->
+          </div>
 
         </div>
 
@@ -944,6 +1013,11 @@
     {
       title: "Community Development",
       line: "Every community is different. The way it\u2019d be built should also be different.",
+      myView: [
+        "Every community is different. The way it\u2019s built should also be different.",
+        "There is no single system that can be copied into every community and expected to work.",
+        "So before thinking about growth, I first try to understand who is already there, why they are there, and what can make the relationship meaningful."
+      ],
       steps: [
         { title: "Build Trust", desc: "Create a safe space where people feel seen and heard.", icon: "users" },
         { title: "Understand People", desc: "Listen closely to conversations, behaviors, and needs.", icon: "search" },
@@ -952,11 +1026,30 @@
         { title: "Feed It Back", desc: "Use insights to improve the product and the community experience.", icon: "refresh" }
       ],
       creates: "Communities that don\u2019t just grow in numbers, but continuously provide <strong>meaningful signals</strong> that help shape <strong>better products and experiences</strong>.",
-      examples: ["Discord & Telegram communities", "Web3 Projects", "Gaming Communities", "Campaigns & Engagement Programs"]
+      examples: [
+        { title: "Web3 Communities", sub: "Discord & Telegram" },
+        { title: "Gaming Communities", sub: "Community engagement & support" },
+        { title: "Community Campaigns", sub: "Zealy quests, participation & engagement systems" },
+        { title: "Social Communities", sub: "Audience conversations, feedback & interaction" }
+      ],
+      reality: {
+        paragraphs: [
+          "A community built from a rigid template is liable to break.",
+          "I don\u2019t copy a playbook just because it worked somewhere else. I find what works for that specific community.",
+          "If something breaks, I go back to the signals."
+        ],
+        list: ["Reinforce what is working.", "Understand what isn\u2019t.", "Iterate."],
+        closing: "That is my approach!"
+      }
     },
     {
       title: "Social Media Management & Brand Growth",
       line: "Content should do more than fill a calendar.",
+      myView: [
+        "PLACEHOLDER \u2014 replace with your real \u201cmy view\u201d copy for this capability.",
+        "PLACEHOLDER \u2014 second paragraph.",
+        "PLACEHOLDER \u2014 third paragraph."
+      ],
       steps: [
         { title: "PLACEHOLDER step 1", desc: "Replace with your real approach copy.", icon: "users" },
         { title: "PLACEHOLDER step 2", desc: "Replace with your real approach copy.", icon: "search" },
@@ -965,11 +1058,25 @@
         { title: "PLACEHOLDER step 5", desc: "Replace with your real approach copy.", icon: "refresh" }
       ],
       creates: "PLACEHOLDER \u2014 replace with your real \u201cwhat this creates\u201d copy.",
-      examples: ["PLACEHOLDER example 1", "PLACEHOLDER example 2", "PLACEHOLDER example 3"]
+      examples: [
+        { title: "PLACEHOLDER example 1", sub: "Replace with a short description" },
+        { title: "PLACEHOLDER example 2", sub: "Replace with a short description" },
+        { title: "PLACEHOLDER example 3", sub: "Replace with a short description" }
+      ],
+      reality: {
+        paragraphs: ["PLACEHOLDER \u2014 replace with your real closing copy for this capability."],
+        list: ["PLACEHOLDER point 1", "PLACEHOLDER point 2", "PLACEHOLDER point 3"],
+        closing: "PLACEHOLDER closing line."
+      }
     },
     {
       title: "Customer Experience",
       line: "The experience after attention matters just as much as getting attention.",
+      myView: [
+        "PLACEHOLDER \u2014 replace with your real \u201cmy view\u201d copy for this capability.",
+        "PLACEHOLDER \u2014 second paragraph.",
+        "PLACEHOLDER \u2014 third paragraph."
+      ],
       steps: [
         { title: "PLACEHOLDER step 1", desc: "Replace with your real approach copy.", icon: "users" },
         { title: "PLACEHOLDER step 2", desc: "Replace with your real approach copy.", icon: "search" },
@@ -978,11 +1085,25 @@
         { title: "PLACEHOLDER step 5", desc: "Replace with your real approach copy.", icon: "refresh" }
       ],
       creates: "PLACEHOLDER \u2014 replace with your real \u201cwhat this creates\u201d copy.",
-      examples: ["PLACEHOLDER example 1", "PLACEHOLDER example 2", "PLACEHOLDER example 3"]
+      examples: [
+        { title: "PLACEHOLDER example 1", sub: "Replace with a short description" },
+        { title: "PLACEHOLDER example 2", sub: "Replace with a short description" },
+        { title: "PLACEHOLDER example 3", sub: "Replace with a short description" }
+      ],
+      reality: {
+        paragraphs: ["PLACEHOLDER \u2014 replace with your real closing copy for this capability."],
+        list: ["PLACEHOLDER point 1", "PLACEHOLDER point 2", "PLACEHOLDER point 3"],
+        closing: "PLACEHOLDER closing line."
+      }
     },
     {
       title: "Operations & Systems",
       line: "Good work becomes more valuable when it doesn\u2019t have to be reinvented.",
+      myView: [
+        "PLACEHOLDER \u2014 replace with your real \u201cmy view\u201d copy for this capability.",
+        "PLACEHOLDER \u2014 second paragraph.",
+        "PLACEHOLDER \u2014 third paragraph."
+      ],
       steps: [
         { title: "PLACEHOLDER step 1", desc: "Replace with your real approach copy.", icon: "users" },
         { title: "PLACEHOLDER step 2", desc: "Replace with your real approach copy.", icon: "search" },
@@ -991,11 +1112,25 @@
         { title: "PLACEHOLDER step 5", desc: "Replace with your real approach copy.", icon: "refresh" }
       ],
       creates: "PLACEHOLDER \u2014 replace with your real \u201cwhat this creates\u201d copy.",
-      examples: ["PLACEHOLDER example 1", "PLACEHOLDER example 2", "PLACEHOLDER example 3"]
+      examples: [
+        { title: "PLACEHOLDER example 1", sub: "Replace with a short description" },
+        { title: "PLACEHOLDER example 2", sub: "Replace with a short description" },
+        { title: "PLACEHOLDER example 3", sub: "Replace with a short description" }
+      ],
+      reality: {
+        paragraphs: ["PLACEHOLDER \u2014 replace with your real closing copy for this capability."],
+        list: ["PLACEHOLDER point 1", "PLACEHOLDER point 2", "PLACEHOLDER point 3"],
+        closing: "PLACEHOLDER closing line."
+      }
     },
     {
       title: "Data & Reporting",
       line: "Information becomes useful when it helps someone make a better decision.",
+      myView: [
+        "PLACEHOLDER \u2014 replace with your real \u201cmy view\u201d copy for this capability.",
+        "PLACEHOLDER \u2014 second paragraph.",
+        "PLACEHOLDER \u2014 third paragraph."
+      ],
       steps: [
         { title: "PLACEHOLDER step 1", desc: "Replace with your real approach copy.", icon: "users" },
         { title: "PLACEHOLDER step 2", desc: "Replace with your real approach copy.", icon: "search" },
@@ -1004,7 +1139,16 @@
         { title: "PLACEHOLDER step 5", desc: "Replace with your real approach copy.", icon: "refresh" }
       ],
       creates: "PLACEHOLDER \u2014 replace with your real \u201cwhat this creates\u201d copy.",
-      examples: ["PLACEHOLDER example 1", "PLACEHOLDER example 2", "PLACEHOLDER example 3"]
+      examples: [
+        { title: "PLACEHOLDER example 1", sub: "Replace with a short description" },
+        { title: "PLACEHOLDER example 2", sub: "Replace with a short description" },
+        { title: "PLACEHOLDER example 3", sub: "Replace with a short description" }
+      ],
+      reality: {
+        paragraphs: ["PLACEHOLDER \u2014 replace with your real closing copy for this capability."],
+        list: ["PLACEHOLDER point 1", "PLACEHOLDER point 2", "PLACEHOLDER point 3"],
+        closing: "PLACEHOLDER closing line."
+      }
     }
   ];
 
@@ -1028,10 +1172,11 @@
   var counterEl = document.getElementById('ccCounter');
   var numberEl = document.getElementById('ccExplorerNumber');
   var titleEl = document.getElementById('ccExplorerTitle');
-  var lineEl = document.getElementById('ccExplorerLine');
   var stepsEl = document.getElementById('ccSteps');
   var createsEl = document.getElementById('ccCreatesText');
   var examplesEl = document.getElementById('ccExamplesList');
+  var myViewEl = document.getElementById('ccMyView');
+  var realityEl = document.getElementById('ccReality');
 
   var explorerIndex = 0;
   var rows = [];
@@ -1053,8 +1198,9 @@
     var cap = CC_DATA[i];
     numberEl.textContent = String(i + 1).padStart(2, '0');
     titleEl.textContent = cap.title;
-    lineEl.textContent = cap.line;
     counterEl.textContent = (i + 1) + ' / ' + CC_DATA.length;
+
+    myViewEl.innerHTML = cap.myView.map(function(p){ return '<p>' + p + '</p>'; }).join('');
 
     stepsEl.innerHTML = cap.steps.map(function(step){
       return '<div class="cc-step">' +
@@ -1069,8 +1215,13 @@
     createsEl.innerHTML = cap.creates;
 
     examplesEl.innerHTML = cap.examples.map(function(ex){
-      return '<li>' + ex + '</li>';
+      return '<li><span class="cc-example-title">' + ex.title + '</span><span class="cc-example-sub">' + ex.sub + '</span></li>';
     }).join('');
+
+    realityEl.innerHTML =
+      cap.reality.paragraphs.map(function(p){ return '<p>' + p + '</p>'; }).join('') +
+      '<ul class="cc-reality-list">' + cap.reality.list.map(function(li){ return '<li>' + li + '</li>'; }).join('') + '</ul>' +
+      '<p class="cc-reality-closing">' + cap.reality.closing + '</p>';
   }
 
   function selectCard(index){
