@@ -196,6 +196,20 @@
     backdrop-filter:blur(18px);
     -webkit-backdrop-filter:blur(18px);
     border-bottom:1px solid rgba(255,255,255,.07);
+    transition:opacity .45s cubic-bezier(.16,1,.3,1), transform .45s cubic-bezier(.16,1,.3,1);
+  }
+
+  @media (max-width:960px){
+    .site-nav.nav-hidden{
+      opacity:0;
+      transform:translateY(-16px);
+      pointer-events:none;
+    }
+    .site-nav.nav-visible{
+      opacity:1;
+      transform:translateY(0);
+      pointer-events:auto;
+    }
   }
 
   .nav-inner{
@@ -293,13 +307,44 @@
       padding:12px 12px 0;
     }
     .nav-inner{
+      position:relative;
+      overflow:hidden;
       padding:11px 16px;
-      background:rgba(18,18,24,.62);
-      backdrop-filter:blur(22px);
-      -webkit-backdrop-filter:blur(22px);
-      border:1px solid rgba(255,255,255,.13);
+      background:rgba(255,255,255,.07);
+      backdrop-filter:blur(24px) saturate(1.6);
+      -webkit-backdrop-filter:blur(24px) saturate(1.6);
+      border:1px solid rgba(255,255,255,.24);
       border-radius:999px;
-      box-shadow:0 14px 34px rgba(0,0,0,.4);
+      box-shadow:
+        inset 0 1.5px 0 rgba(255,255,255,.6),
+        inset 0 -14px 22px -10px rgba(255,255,255,.08),
+        inset 0 0 0 1px rgba(255,255,255,.03),
+        0 14px 34px rgba(0,0,0,.4);
+    }
+    .nav-inner::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      border-radius:inherit;
+      background:radial-gradient(130% 80% at 50% -25%, rgba(255,255,255,.5), transparent 60%);
+      pointer-events:none;
+      z-index:0;
+    }
+    .nav-inner::after{
+      content:'';
+      position:absolute;
+      top:9%; left:14%;
+      width:26%;
+      height:22%;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(255,255,255,.55), transparent 70%);
+      filter:blur(2px);
+      pointer-events:none;
+      z-index:0;
+    }
+    .nav-brand, .nav-hamburger{
+      position:relative;
+      z-index:1;
     }
     .nav-mobile-menu{
       margin:8px 12px 0;
@@ -2399,6 +2444,34 @@
 </footer>
 
 <script>
+  // Mobile nav pill: hidden while at the hero top, fades in once scrolling begins
+  (function(){
+    var nav = document.getElementById('siteNav');
+    if (!nav) return;
+
+    function isMobile(){
+      return window.matchMedia('(max-width:960px)').matches;
+    }
+
+    function update(){
+      if (!isMobile()) {
+        nav.classList.remove('nav-hidden', 'nav-visible');
+        return;
+      }
+      if (window.scrollY > 40) {
+        nav.classList.add('nav-visible');
+        nav.classList.remove('nav-hidden');
+      } else {
+        nav.classList.add('nav-hidden');
+        nav.classList.remove('nav-visible');
+      }
+    }
+
+    update();
+    window.addEventListener('scroll', update, { passive:true });
+    window.addEventListener('resize', update, { passive:true });
+  })();
+
   // Impact card description marquee — only when text is actually truncated on small screens
   (function(){
     var descs = Array.prototype.slice.call(document.querySelectorAll('.impact-desc'));
