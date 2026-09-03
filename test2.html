@@ -9,9 +9,12 @@
   Mobile (<768px): header, subheading, quote box, 5 cards (tap to
   open a full-bleed Explorer overlay, matte black background).
   Tablet (768px–1023px): same click-to-open interaction model as
-  mobile, but bigger type, 2 cards per row instead of one long
-  stack, and the Explorer becomes a centered rounded panel instead
-  of full-bleed edge-to-edge.
+  mobile, bigger type, 2 cards per row, Explorer as a centered
+  rounded panel (max-width 680px, intentional) instead of full-bleed.
+  .cc-inner itself is NOT capped narrow — runs edge-to-edge within
+  the section's own padding (was wrongly capped at 680px, causing
+  dead space on both sides; fixed to 1200px so it never engages in
+  this range).
   Desktop (min-width: 1024px):
     Step 1 — header + quote box split 40/60.
     Step 2 — capability cards (30%) + Explorer (70%) split, height
@@ -615,7 +618,7 @@
   @media (min-width:768px) and (max-width:1023.98px){
 
     .cc-section{ padding:56px 40px 76px; }
-    .cc-inner{ max-width:680px; }
+    .cc-inner{ max-width:1200px; } /* effectively edge-to-edge within the tablet range — was 680px, which is narrower than the viewport itself and caused the dead space on both sides */
 
     .cc-title{ font-size:46px; }
     .cc-subheading{ font-size:19px; max-width:52ch; }
