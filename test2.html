@@ -11,9 +11,13 @@
   Desktop (min-width: 1024px):
     Step 1 — header + quote box split 40/60.
     Step 2 — capability cards (30%) + Explorer (70%) split. The
-    Explorer is permanently visible (sticky while scrolling the card
-    list), defaults to capability 1 highlighted/shown, and crossfades
-    its content in place when you click a different card or use
+    Explorer's total height is locked to match the cards column
+    (CSS grid stretch + min-height:0 trick) instead of growing to
+    fit its own longer content. Its inner content area scrolls
+    internally; the Previous/Next/counter footer stays fixed at the
+    bottom of the panel, always reachable without scrolling to the
+    end. Defaults to capability 1 highlighted/shown, crossfades its
+    content in place when you click a different card or use
     Previous/Next. No Back/Close controls on desktop since there's
     nothing to hide.
 ============================================================= -->
@@ -632,8 +636,9 @@
     .cc-stage{
       display:grid;
       grid-template-columns:3fr 7fr; /* 30% left / 70% right */
-      align-items:start; /* NOT stretch — the explorer needs its own natural
-                             height so position:sticky has room to work */
+      align-items:stretch; /* both columns become the SAME height — the
+                               explorer's own content no longer decides
+                               the row height, see min-height:0 below */
       gap:clamp(28px, 3vw, 48px);
     }
 
@@ -646,8 +651,6 @@
     .cc-explorer{
       /* undo the mobile full-bleed breakout — on desktop it's just the
          right-hand grid column, not an edge-to-edge overlay */
-      position:sticky;
-      top:24px;
       width:auto;
       margin-left:0;
       margin-right:0;
@@ -655,22 +658,39 @@
       border-bottom:none;
       border-radius:24px;
       border:1px solid var(--card-border);
-      padding-bottom:24px;
       animation:none; /* no open/close animation needed — it's always on screen */
+
+      /* lock total panel height to match the cards column instead of
+         growing to fit its own (often much longer) content. min-height:0
+         is the key part — without it, a grid item with overflow set
+         still forces the row to grow to fit its full content anyway. */
+      display:flex;
+      flex-direction:column;
+      min-height:0;
+      overflow:hidden; /* the panel itself doesn't scroll — its inner content area does, see below */
+      padding-bottom:0;
     }
 
     .cc-explorer-inner{
       max-width:none;
-      padding:28px 28px 8px;
+      padding:28px 28px 24px;
+      flex:1;
+      min-height:0;
+      overflow-y:auto; /* this is what actually scrolls */
     }
 
-    .cc-explorer-footer{
-      position:static; /* footer just sits at the bottom of the panel;
-                           the panel itself is what's sticky, so this
-                           doesn't need its own separate sticky behavior */
+    /* footer is a fixed, non-scrolling part of the panel — always
+       reachable without scrolling to the end of the content above it.
+       Selector matches (rather than beats on specificity) the base
+       ".cc-explorer .cc-explorer-footer" rule so this override reliably
+       takes effect instead of silently losing to it. */
+    .cc-explorer .cc-explorer-footer{
+      position:static;
+      flex-shrink:0;
       max-width:none;
-      margin:26px 0 0;
-      padding:0 28px;
+      margin:0;
+      padding:16px 28px 22px;
+      border-top:1px solid var(--card-border);
     }
 
     /* nothing to close/return to anymore — the panel can't hide on desktop */
