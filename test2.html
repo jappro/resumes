@@ -9,12 +9,9 @@
   Mobile (<768px): header, subheading, quote box, 5 cards (tap to
   open a full-bleed Explorer overlay, matte black background).
   Tablet (768px–1023px): same click-to-open interaction model as
-  mobile, bigger type, 2 cards per row, Explorer as a centered
-  rounded panel (max-width 680px, intentional) instead of full-bleed.
-  .cc-inner itself is NOT capped narrow — runs edge-to-edge within
-  the section's own padding (was wrongly capped at 680px, causing
-  dead space on both sides; fixed to 1200px so it never engages in
-  this range).
+  mobile, bigger type, 2 cards per row, Explorer as a rounded panel
+  matching the same edges as the rest of the content (was wrongly
+  capped at 680px causing dead space, now edge-to-edge like .cc-inner).
   Desktop (min-width: 1024px):
     Step 1 — header + quote box split 40/60.
     Step 2 — capability cards (30%) + Explorer (70%) split, height
@@ -636,10 +633,12 @@
     .cc-cap-title{ font-size:19.5px; }
     .cc-cap-line{ font-size:15px; }
 
-    /* Explorer: centered rounded panel instead of full-bleed */
+    /* Explorer: rounded panel matching the same edges as everything
+       else on the page (was capped at 680px, creating dead space on
+       both sides — same class of bug as the .cc-inner one above) */
     .cc-explorer{
       width:auto;
-      max-width:680px;
+      max-width:1200px; /* effectively edge-to-edge within the tablet range */
       margin:0 auto;
       border-top:none;
       border-bottom:none;
