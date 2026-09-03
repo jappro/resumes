@@ -6,13 +6,12 @@
 <title>Core Capabilities — Preview</title>
 <!-- ============================================================
   CORE CAPABILITIES SECTION — standalone test build
-  Mobile: header, subheading, quote box, 5 cards (tap to open a
-  full-bleed Explorer overlay, matte black background). X close
-  button: position:fixed, always floating top-right while the panel
-  is open. Floating controls use frosted glass with an SVG-filter
-  refraction enhancement (degrades gracefully without it).
-  "What this creates" box now has proper margin-bottom (was 0,
-  causing it to collide with "EXAMPLES OF WHERE I'VE DONE THIS").
+  Mobile (<768px): header, subheading, quote box, 5 cards (tap to
+  open a full-bleed Explorer overlay, matte black background).
+  Tablet (768px–1023px): same click-to-open interaction model as
+  mobile, but bigger type, 2 cards per row instead of one long
+  stack, and the Explorer becomes a centered rounded panel instead
+  of full-bleed edge-to-edge.
   Desktop (min-width: 1024px):
     Step 1 — header + quote box split 40/60.
     Step 2 — capability cards (30%) + Explorer (70%) split, height
@@ -603,6 +602,63 @@
      Starts at 1024px (large tablet / small laptop) instead of 900px,
      and uses clamp()-based sizing above that so it keeps scaling
      gracefully on large monitors instead of capping out. */
+  /* ============ TABLET (768px–1023px) ============
+     Blends mobile's single-column, click-to-open-panel interaction
+     model with more generous sizing/spacing borrowed from the desktop
+     scale. NOT a scaled-down desktop split — a 30/70 column layout
+     would leave the cards column under ~230px wide at this range,
+     too cramped to be usable. Instead: bigger type, 2 cards per row
+     instead of one long stack, and the Explorer becomes a centered
+     rounded panel instead of a full-bleed edge-to-edge overlay (full-
+     bleed reads fine on a phone-width screen, less so stretched
+     across a wide tablet). */
+  @media (min-width:768px) and (max-width:1023.98px){
+
+    .cc-section{ padding:56px 40px 76px; }
+    .cc-inner{ max-width:680px; }
+
+    .cc-title{ font-size:46px; }
+    .cc-subheading{ font-size:19px; max-width:52ch; }
+
+    .cc-quote{ padding:30px 28px; }
+    .cc-quote-text{ font-size:16.5px; }
+
+    /* two cards per row instead of one long stacked column */
+    .cc-cap-list{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+    }
+    .cc-cap-row{ padding:24px 22px; }
+    .cc-cap-title{ font-size:19.5px; }
+    .cc-cap-line{ font-size:15px; }
+
+    /* Explorer: centered rounded panel instead of full-bleed */
+    .cc-explorer{
+      width:auto;
+      max-width:680px;
+      margin:0 auto;
+      border-top:none;
+      border-bottom:none;
+      border-radius:28px;
+      border:1px solid var(--card-border);
+    }
+    .cc-explorer-inner{ max-width:none; padding:32px 32px 12px; }
+    .cc-explorer-number{ width:48px; height:48px; font-size:17px; }
+    .cc-explorer-title{ font-size:30px; }
+    .cc-explorer-line{ font-size:16px; }
+    .cc-explorer-label{ font-size:12.5px; }
+    .cc-step-icon{ width:52px; height:52px; }
+    .cc-step-icon svg{ width:24px; height:24px; }
+    .cc-step-title{ font-size:17px; }
+    .cc-step-desc{ font-size:14.5px; }
+    .cc-creates-box{ padding:20px; }
+    .cc-creates-text{ font-size:15.5px; }
+    .cc-examples-list li{ font-size:15.5px; }
+
+    .cc-explorer-footer{ max-width:none; padding:0 32px; }
+  }
+
   @media (min-width:1024px){
     .cc-section{ padding-left:clamp(28px, 6vw, 96px); padding-right:clamp(28px, 6vw, 96px); }
     .cc-inner{ max-width:1800px; } /* effectively edge-to-edge on real desktop widths; only kicks in as a cap on ultra-wide monitors */
