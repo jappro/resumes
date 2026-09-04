@@ -916,9 +916,10 @@
       position:relative;
       background-color:var(--bg);
       background-image:
-        radial-gradient(ellipse 55% 42% at 6% 0%, var(--amber-soft) 0%, transparent 62%),
-        radial-gradient(ellipse 55% 42% at 94% 0%, var(--teal-soft) 0%, transparent 62%),
-        radial-gradient(ellipse 90% 65% at 50% 0%, var(--purple-soft) 0%, transparent 72%);
+        radial-gradient(ellipse 720px 480px at 0% 0%, var(--amber-soft) 0%, transparent 65%),
+        radial-gradient(ellipse 720px 480px at 100% 0%, var(--teal-soft) 0%, transparent 65%),
+        radial-gradient(ellipse 1100px 700px at 50% 0%, var(--purple-soft) 0%, transparent 70%);
+      background-repeat:no-repeat;
     }
     .phil-section, .phil-body{
       background:transparent;
@@ -929,21 +930,26 @@
 
     /* ---------- header: centered ---------- */
     .phil-header{
-      max-width:920px;
+      max-width:1080px;
       margin:0 auto;
       padding-top:0;
       text-align:center;
     }
     .phil-eyebrow{
       white-space:normal;
+      font-size:16px;
+      letter-spacing:0.18em;
     }
     .phil-heading{
-      max-width:none;
+      max-width:1080px;
+      font-size:clamp(44px, 4vw, 56px);
       margin-left:auto;
       margin-right:auto;
     }
     .phil-intro{
-      max-width:58ch;
+      max-width:640px;
+      font-size:20px;
+      line-height:1.65;
       margin-left:auto;
       margin-right:auto;
     }
@@ -1103,7 +1109,10 @@
   /* ---------- ultra-wide monitors: keep scaling instead of
      hard-capping again and leaving the same dead-gutter problem ---------- */
   @media (min-width:1600px){
-    .phil-header{ max-width:1040px; }
+    .phil-header{ max-width:1220px; }
+    .phil-eyebrow{ font-size:17px; }
+    .phil-heading{ max-width:1200px; font-size:clamp(52px, 3.6vw, 64px); }
+    .phil-intro{ max-width:680px; font-size:21px; }
     .phil-body-cards{ max-width:1680px; padding-left:72px; padding-right:72px; }
   }
 </style>
