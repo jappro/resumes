@@ -342,9 +342,10 @@
 
   .hero-orbit{
     position:absolute;
-    width:420px; height:420px;
-    border:1px dashed rgba(255,255,255,.16);
+    width:520px; height:520px;
+    border:1px dashed rgba(255,255,255,.14);
     border-radius:50%;
+    z-index:0;
   }
 
   .orbit-dot{
@@ -357,19 +358,30 @@
 
   .hero-photo-frame{
     position:relative;
-    width:340px; height:420px;
-    border-radius:28px;
-    overflow:hidden;
-    background:linear-gradient(160deg,#1a1a24,#0a0a10);
-    box-shadow:0 40px 90px rgba(0,0,0,.55);
-    border:1px solid rgba(255,255,255,.08);
+    width:460px; height:600px;
+    z-index:1;
+  }
+
+  .hero-photo-glow{
+    position:absolute;
+    inset:-70px;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(46% 42% at 62% 32%, rgba(124,92,255,.55), transparent 68%),
+      radial-gradient(42% 46% at 78% 60%, rgba(47,95,224,.5), transparent 70%),
+      radial-gradient(36% 36% at 40% 75%, rgba(45,212,191,.22), transparent 70%);
+    filter:blur(40px);
   }
 
   .hero-photo-img{
+    position:relative;
+    z-index:1;
     width:100%; height:100%;
     background-image:url('src/hero-photo.png');
-    background-size:cover;
-    background-position:center;
+    background-size:contain;
+    background-position:bottom center;
+    background-repeat:no-repeat;
     -webkit-user-select:none;
     user-select:none;
     -webkit-user-drag:none;
@@ -400,13 +412,13 @@
   }
   .float-ic svg{ width:15px; height:15px; }
 
-  .card-community{ top:8%; left:-8%; }
+  .card-community{ top:6%; left:-2%; }
   .card-community .float-ic{ background:rgba(164,140,255,.14); color:#a48cff; }
 
-  .card-systems{ top:44%; left:-4%; }
+  .card-systems{ top:50%; left:-6%; }
   .card-systems .float-ic{ background:rgba(111,147,255,.14); color:#6f93ff; }
 
-  .card-growth{ top:34%; right:-10%; }
+  .card-growth{ top:26%; right:-14%; }
   .card-growth .float-ic{ background:rgba(74,222,128,.14); color:#4ADE80; }
 
   .float-label{
@@ -772,6 +784,7 @@
       </div>
 
       <div class="hero-photo-frame">
+        <div class="hero-photo-glow" aria-hidden="true"></div>
         <div class="hero-photo-img" role="img" aria-label="Uche Japheth"></div>
       </div>
 
