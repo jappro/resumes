@@ -382,11 +382,30 @@
     background-size:contain;
     background-position:bottom center;
     background-repeat:no-repeat;
+    transform:translateY(-24px);
     -webkit-user-select:none;
     user-select:none;
     -webkit-user-drag:none;
     user-drag:none;
     pointer-events:none;
+
+    /* fade the hard left/right/bottom photo-crop edges to transparent
+       so they dissolve into whatever sits behind (glow/bg) instead of
+       showing a straight cut line at the shoulders/chest */
+    mask-image:
+      linear-gradient(to right, transparent 0%, #000 9%),
+      linear-gradient(to left,  transparent 0%, #000 9%),
+      linear-gradient(to top,   transparent 0%, #000 16%);
+    mask-repeat:no-repeat;
+    mask-size:100% 100%;
+    mask-composite:intersect;
+    -webkit-mask-image:
+      linear-gradient(to right, transparent 0%, #000 9%),
+      linear-gradient(to left,  transparent 0%, #000 9%),
+      linear-gradient(to top,   transparent 0%, #000 16%);
+    -webkit-mask-repeat:no-repeat;
+    -webkit-mask-size:100% 100%;
+    -webkit-mask-composite:source-in, source-in;
   }
 
   .hero-float-card{
