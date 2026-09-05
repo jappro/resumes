@@ -485,7 +485,7 @@
     text-transform:uppercase;
     color:rgba(190,180,255,.85);
     white-space:nowrap;
-    margin-bottom:30px;
+    margin-bottom:18px;
   }
 
   .impact-diagram-col{
@@ -498,7 +498,7 @@
     z-index:1;
     max-width:1280px;
     margin:0 auto;
-    padding:56px 32px 60px;
+    padding:18px 32px 60px;
     display:grid;
     grid-template-columns:1fr 1.1fr;
     gap:48px;
@@ -672,6 +672,14 @@
     overflow:visible;
   }
 
+  .signals-top{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:24px;
+    margin-bottom:20px;
+  }
+
   .signals-heading{
     font-family:'Space Grotesk', sans-serif;
     font-weight:700;
@@ -685,14 +693,15 @@
     font-size:14.5px;
     line-height:1.55;
     color:rgba(255,255,255,.6);
-    max-width:420px;
-    margin-bottom:30px;
+    max-width:380px;
+    margin-bottom:0;
   }
 
   .ba-toggle{
     display:flex;
     gap:10px;
-    margin-bottom:26px;
+    flex-shrink:0;
+    margin-top:4px;
   }
 
   .ba-btn{
@@ -951,16 +960,20 @@
     </div>
 
     <div class="signals-panel">
-      <h3 class="signals-heading">From Signals to Impact</h3>
-      <p class="signals-sub">What changes when people, information, and decisions start connecting.</p>
+      <div class="signals-top">
+        <div class="signals-text">
+          <h3 class="signals-heading">From Signals to Impact</h3>
+          <p class="signals-sub">What changes when people, information, and decisions start connecting.</p>
+        </div>
 
-      <div class="ba-toggle" role="group" aria-label="Before and after dashboard toggle">
-        <button type="button" class="ba-btn ba-before" data-state="before" aria-pressed="false">
-          <span class="ba-dot ba-dot-red"></span>Before
-        </button>
-        <button type="button" class="ba-btn ba-after active" data-state="after" aria-pressed="true">
-          <span class="ba-dot ba-dot-green"></span>After
-        </button>
+        <div class="ba-toggle" role="group" aria-label="Before and after dashboard toggle">
+          <button type="button" class="ba-btn ba-before" data-state="before" aria-pressed="false">
+            <span class="ba-dot ba-dot-red"></span>Before
+          </button>
+          <button type="button" class="ba-btn ba-after active" data-state="after" aria-pressed="true">
+            <span class="ba-dot ba-dot-green"></span>After
+          </button>
+        </div>
       </div>
 
       <div class="ba-stack" id="baStack" data-active="after">
