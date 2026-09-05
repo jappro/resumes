@@ -251,8 +251,8 @@
   .hero-photo-badge{
     position:absolute;
     z-index:2;
-    bottom:6%;
-    right:2%;
+    bottom:38%;
+    right:-4%;
     display:inline-flex;
     align-items:center;
     gap:9px;
@@ -478,6 +478,8 @@
 
   /* ============ IMPACT SECTION (orbital diagram + message) ============ */
   .impact-kicker{
+    display:block;
+    text-align:center;
     font-family:'Space Grotesk', sans-serif;
     font-size:12px;
     font-weight:700;
@@ -491,7 +493,7 @@
   .impact-diagram-col{
     display:flex;
     flex-direction:column;
-    padding-top:34px;
+    padding-top:6px;
   }
 
   .impact-section{
@@ -510,7 +512,7 @@
   .impact-diagram{
     position:relative;
     width:100%;
-    max-width:440px;
+    max-width:456px;
     aspect-ratio:1/1;
     margin:0 auto;
     align-self:center;
@@ -675,10 +677,6 @@
   }
 
   .signals-top{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-    gap:24px;
     margin-bottom:20px;
   }
 
@@ -699,11 +697,15 @@
     margin-bottom:0;
   }
 
+  .ba-toggle-row{
+    display:flex;
+    justify-content:flex-end;
+    margin-bottom:16px;
+  }
+
   .ba-toggle{
     display:flex;
     gap:10px;
-    flex-shrink:0;
-    margin-top:4px;
   }
 
   .ba-btn{
@@ -732,11 +734,11 @@
 
   .ba-stack{
     position:relative;
-    width:150%;
-    max-width:760px;
+    width:160%;
+    max-width:820px;
     aspect-ratio:1440/1024;
     margin-left:auto;
-    margin-right:-140px;
+    margin-right:-200px;
   }
 
   .ba-shot{
@@ -967,7 +969,9 @@
           <h3 class="signals-heading">From Signals to Impact</h3>
           <p class="signals-sub">What changes when people, information, and decisions start connecting.</p>
         </div>
+      </div>
 
+      <div class="ba-toggle-row">
         <div class="ba-toggle" role="group" aria-label="Before and after dashboard toggle">
           <button type="button" class="ba-btn ba-before" data-state="before" aria-pressed="false">
             <span class="ba-dot ba-dot-red"></span>Before
