@@ -676,86 +676,109 @@
     overflow:hidden;
   }
 
-  .impact-message{
-    position:relative;
-    border-radius:24px;
-    border:1px solid rgba(255,255,255,.12);
-    background:rgba(255,255,255,.035);
-    backdrop-filter:blur(22px);
-    -webkit-backdrop-filter:blur(22px);
-    box-shadow:0 30px 70px rgba(0,0,0,.35);
-    padding:36px 36px 32px;
+  /* ============ FROM SIGNALS TO IMPACT (before/after stack) ============ */
+  .signals-panel{
     display:flex;
     flex-direction:column;
-    min-height:0;
+    justify-content:center;
+    height:100%;
   }
 
-  .impact-arrow{
+  .signals-heading{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700;
+    font-size:27px;
+    letter-spacing:-0.01em;
+    color:#fff;
+    margin-bottom:10px;
+  }
+
+  .signals-sub{
+    font-size:14.5px;
+    line-height:1.55;
+    color:rgba(255,255,255,.6);
+    max-width:420px;
+    margin-bottom:30px;
+  }
+
+  .ba-toggle{
+    display:flex;
+    gap:10px;
+    margin-bottom:26px;
+  }
+
+  .ba-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 17px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.14);
+    background:rgba(255,255,255,.03);
+    color:rgba(255,255,255,.6);
+    font-family:'Space Grotesk', sans-serif;
+    font-size:12.5px;
+    font-weight:700;
+    letter-spacing:.02em;
+    cursor:pointer;
+    transition:border-color .25s ease, background .25s ease, color .25s ease;
+  }
+
+  .ba-dot{ width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .ba-dot-red{ background:#ef4444; box-shadow:0 0 8px rgba(239,68,68,.7); }
+  .ba-dot-green{ background:#4ADE80; box-shadow:0 0 8px rgba(74,222,128,.7); }
+
+  .ba-btn.ba-before.active{ border-color:rgba(239,68,68,.45); background:rgba(239,68,68,.12); color:#fecaca; }
+  .ba-btn.ba-after.active{ border-color:rgba(74,222,128,.45); background:rgba(74,222,128,.12); color:#bbf7d0; }
+
+  .ba-stack{
+    position:relative;
+    width:100%;
+    max-width:520px;
+    aspect-ratio:1440/1024;
+  }
+
+  .ba-shot{
     position:absolute;
-    top:-44px;
-    left:44px;
-    width:86px;
-    height:56px;
+    inset:0;
+    border-radius:14px;
+    background-size:cover;
+    background-position:top center;
+    background-repeat:no-repeat;
+    border:1px solid rgba(255,255,255,.1);
+    box-shadow:0 30px 70px rgba(0,0,0,.5);
+    transition:transform .5s cubic-bezier(.16,1,.3,1), opacity .5s ease;
+    -webkit-user-select:none;
+    user-select:none;
+    -webkit-user-drag:none;
+    user-drag:none;
     pointer-events:none;
   }
 
-  .impact-message-scroll{
-    overflow-y:auto;
-    padding-right:8px;
-    min-height:0;
+  .ba-shot-before{ background-image:url('src/IMG_2673.png'); }
+  .ba-shot-after{ background-image:url('src/IMG_2674.png'); }
+
+  .ba-stack[data-active="after"] .ba-shot-after{
+    transform:translate(0,0) scale(1);
+    opacity:1;
+    z-index:2;
+  }
+  .ba-stack[data-active="after"] .ba-shot-before{
+    transform:translate(-7%,9%) scale(.93);
+    opacity:.85;
+    z-index:1;
   }
 
-  .im-lead{
-    font-size:19px;
-    line-height:1.5;
-    color:rgba(255,255,255,.85);
-    margin-bottom:22px;
+  .ba-stack[data-active="before"] .ba-shot-before{
+    transform:translate(0,0) scale(1);
+    opacity:1;
+    z-index:2;
   }
-
-  .im-white{ color:#fff; font-weight:700; }
-  .im-blue{ color:#6f93ff; font-weight:600; }
-  .im-violet{ color:#a48cff; font-weight:600; }
-  .im-green{ color:#4ADE80; font-weight:600; }
-
-  .im-list{
-    list-style:none;
-    display:flex;
-    flex-direction:column;
-    gap:11px;
-    margin-bottom:24px;
+  .ba-stack[data-active="before"] .ba-shot-after{
+    transform:translate(-7%,9%) scale(.93);
+    opacity:.85;
+    z-index:1;
   }
-
-  .im-list li{
-    display:flex;
-    align-items:flex-start;
-    gap:10px;
-    font-size:14.5px;
-    line-height:1.5;
-    color:rgba(255,255,255,.78);
-  }
-
-  .im-dot{
-    width:7px; height:7px;
-    border-radius:50%;
-    margin-top:7px;
-    flex-shrink:0;
-  }
-
-  .im-divider{
-    height:1px;
-    background:rgba(255,255,255,.1);
-    margin-bottom:22px;
-  }
-
-  .im-body{
-    font-size:15px;
-    line-height:1.6;
-    color:rgba(255,255,255,.8);
-    margin-bottom:18px;
-  }
-
-  .im-body:last-child{ margin-bottom:0; }
-  .im-body strong{ color:#fff; }
 
 </style>
 </head>
@@ -939,31 +962,45 @@
       </div>
     </div>
 
-    <div class="impact-message" id="impactMessage">
-      <svg class="impact-arrow" viewBox="0 0 90 60" fill="none"><path d="M85 50C60 55 25 45 8 12" stroke="rgba(180,170,255,.55)" stroke-width="1.6" stroke-linecap="round"/><path d="M2 8 L8 12 L13 4" stroke="rgba(180,170,255,.55)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
-      <div class="impact-message-scroll">
-        <p class="im-lead"><span class="im-white">The goal was never to do everything.</span><br>It was to understand how different functions <span class="im-blue">systematically</span> contribute to <span class="im-violet">improving a product</span>.</p>
+    <div class="signals-panel">
+      <h3 class="signals-heading">From Signals to Impact</h3>
+      <p class="signals-sub">What changes when people, information, and decisions start connecting.</p>
 
-        <ul class="im-list">
-          <li><span class="im-dot" style="background:#a48cff"></span>Community conversations become feedback.</li>
-          <li><span class="im-dot" style="background:#6f93ff"></span>Feedback reveals product insight.</li>
-          <li><span class="im-dot" style="background:#6f93ff"></span>Product insight shapes better decisions, content, and experiences.</li>
-          <li><span class="im-dot" style="background:#4ADE80"></span>Operations make the process repeatable.</li>
-          <li><span class="im-dot" style="background:#e6a24d"></span>Data helps reveal what the system is telling us.</li>
-        </ul>
+      <div class="ba-toggle" role="group" aria-label="Before and after dashboard toggle">
+        <button type="button" class="ba-btn ba-before" data-state="before" aria-pressed="false">
+          <span class="ba-dot ba-dot-red"></span>Before
+        </button>
+        <button type="button" class="ba-btn ba-after active" data-state="after" aria-pressed="true">
+          <span class="ba-dot ba-dot-green"></span>After
+        </button>
+      </div>
 
-        <div class="im-divider"></div>
-
-        <p class="im-body">These aren't five unrelated jobs to me.<br><span class="im-violet">They're five angles of the same system.</span></p>
-
-        <p class="im-body">My work is about reducing the gaps between people, information, and the decisions that shape a product.</p>
-
-        <p class="im-body"><strong>I don't</strong> <span class="im-violet">need to own every part of the system.</span><br><strong>I</strong> <span class="im-green">help the parts work better together.</span></p>
+      <div class="ba-stack" id="baStack" data-active="after">
+        <div class="ba-shot ba-shot-before" role="img" aria-label="Before dashboard"></div>
+        <div class="ba-shot ba-shot-after" role="img" aria-label="After dashboard"></div>
       </div>
     </div>
 
   </div>
 </header>
+
+<script>
+  (function(){
+    var stack = document.getElementById('baStack');
+    var buttons = document.querySelectorAll('.ba-btn');
+    buttons.forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var state = btn.getAttribute('data-state');
+        stack.setAttribute('data-active', state);
+        buttons.forEach(function(b){
+          var isActive = b === btn;
+          b.classList.toggle('active', isActive);
+          b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      });
+    });
+  })();
+</script>
 
 </body>
 </html>
