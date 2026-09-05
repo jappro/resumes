@@ -494,6 +494,7 @@
     display:flex;
     flex-direction:column;
     padding-top:6px;
+    min-width:0;
   }
 
   .impact-section{
@@ -674,6 +675,7 @@
     position:relative;
     overflow:visible;
     margin-top:-28px;
+    min-width:0;
   }
 
   .signals-top{
@@ -1013,18 +1015,26 @@
   // measure it on load/resize and set an explicit pixel width that
   // reaches — and slightly overshoots — the actual browser edge.
   // html{overflow-x:hidden} clips the overshoot, giving the crop.
+  //
+  // Safety: .signals-panel / .impact-diagram-col carry min-width:0 so
+  // this explicit width can never force the CSS Grid track to expand
+  // (Grid's default min-width:auto would otherwise treat a large
+  // explicit child width as the column's minimum size and blow out
+  // the whole layout). HARD_CAP below is a second safety net in case
+  // anything upstream changes.
   (function(){
     var stack = document.getElementById('baStack');
     if(!stack) return;
-    var OVERSHOOT = 60; // px past the true edge, so it's visibly cut off
+    var OVERSHOOT = 60;   // px past the true edge, so it's visibly cut off
+    var HARD_CAP = 900;   // px — this can never exceed this, no matter what
 
     function bleedRight(){
-      // reset so getBoundingClientRect gives the natural left position,
-      // not one skewed by a previous run's inline width
       stack.style.maxWidth = 'none';
       stack.style.width = '';
       var rect = stack.getBoundingClientRect();
       var target = (window.innerWidth - rect.left) + OVERSHOOT;
+      target = Math.min(target, HARD_CAP);
+      target = Math.max(target, 320); // never collapse absurdly small either
       stack.style.width = target + 'px';
     }
 
