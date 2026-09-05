@@ -477,26 +477,7 @@
   }
 
   /* ============ IMPACT SECTION (orbital diagram + message) ============ */
-  .impact-heading{
-    position:relative;
-    z-index:1;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:20px;
-    max-width:1280px;
-    margin:0 auto;
-    padding:0 32px;
-  }
-
-  .impact-heading-line{
-    flex:1;
-    max-width:220px;
-    height:1px;
-    background:linear-gradient(90deg, transparent, rgba(255,255,255,.25), transparent);
-  }
-
-  .impact-heading span:not(.impact-heading-line){
+  .impact-kicker{
     font-family:'Space Grotesk', sans-serif;
     font-size:12px;
     font-weight:700;
@@ -504,6 +485,12 @@
     text-transform:uppercase;
     color:rgba(190,180,255,.85);
     white-space:nowrap;
+    margin-bottom:30px;
+  }
+
+  .impact-diagram-col{
+    display:flex;
+    flex-direction:column;
   }
 
   .impact-section{
@@ -511,11 +498,12 @@
     z-index:1;
     max-width:1280px;
     margin:0 auto;
-    padding:36px 32px 60px;
+    padding:56px 32px 60px;
     display:grid;
-    grid-template-columns:1fr 1fr;
+    grid-template-columns:1fr 1.1fr;
     gap:48px;
-    align-items:stretch;
+    align-items:start;
+    overflow:visible;
   }
 
   .impact-diagram{
@@ -680,8 +668,8 @@
   .signals-panel{
     display:flex;
     flex-direction:column;
-    justify-content:center;
-    height:100%;
+    position:relative;
+    overflow:visible;
   }
 
   .signals-heading{
@@ -733,9 +721,11 @@
 
   .ba-stack{
     position:relative;
-    width:100%;
-    max-width:520px;
+    width:150%;
+    max-width:760px;
     aspect-ratio:1440/1024;
+    margin-left:auto;
+    margin-right:-140px;
   }
 
   .ba-shot{
@@ -873,13 +863,10 @@
     </div>
   </div>
 
-  <div class="impact-heading">
-    <span class="impact-heading-line"></span>
-    <span>How I Drive Product Impact</span>
-    <span class="impact-heading-line"></span>
-  </div>
-
   <div class="impact-section">
+
+    <div class="impact-diagram-col">
+      <span class="impact-kicker">How I Drive Product Impact</span>
 
     <div class="impact-diagram">
       <svg class="impact-ring" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -960,6 +947,7 @@
           </div>
         </div>
       </div>
+    </div>
     </div>
 
     <div class="signals-panel">
